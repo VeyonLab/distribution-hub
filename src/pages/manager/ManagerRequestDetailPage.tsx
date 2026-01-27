@@ -34,6 +34,10 @@ export default function ManagerRequestDetailPage() {
   }
 
   const totalItems = request.items.reduce((sum, item) => sum + item.quantity, 0);
+  const grandTotal = request.items.reduce((sum, item) => {
+    const product = getProductById(item.productId);
+    return sum + (product ? product.price * item.quantity : 0);
+  }, 0);
   const dateStr = new Date(request.createdAt).toLocaleDateString('en-IN', {
     weekday: 'long',
     day: 'numeric',
@@ -109,6 +113,7 @@ export default function ManagerRequestDetailPage() {
           <CardContent className="space-y-2">
             {request.items.map((item, index) => {
               const product = getProductById(item.productId);
+              const lineTotal = product ? product.price * item.quantity : 0;
               
               return (
                 <div 
@@ -121,16 +126,28 @@ export default function ManagerRequestDetailPage() {
                     </div>
                     <div>
                       <p className="font-medium">{product?.name || 'Unknown Product'}</p>
-                      <p className="text-xs text-muted-foreground">{product?.unit}</p>
+                      <p className="text-xs text-muted-foreground">
+                        ₹{product?.price?.toLocaleString('en-IN') || 0} per {product?.unit}
+                      </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg font-bold">{item.quantity}</p>
-                    <p className="text-xs text-muted-foreground">{product?.unit}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {item.quantity} × ₹{product?.price?.toLocaleString('en-IN') || 0}
+                    </p>
+                    <p className="text-base font-bold text-accent">
+                      ₹{lineTotal.toLocaleString('en-IN')}
+                    </p>
                   </div>
                 </div>
               );
             })}
+            
+            {/* Grand Total */}
+            <div className="mt-3 flex items-center justify-between border-t pt-3">
+              <span className="font-medium">Total Amount</span>
+              <span className="text-lg font-bold text-accent">₹{grandTotal.toLocaleString('en-IN')}</span>
+            </div>
           </CardContent>
         </Card>
       </div>
