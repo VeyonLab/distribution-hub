@@ -22,6 +22,7 @@ export interface Product {
   name: string;
   unit: string;
   tenantId: string;
+  status: 'active' | 'inactive';
 }
 
 export interface Vendor {

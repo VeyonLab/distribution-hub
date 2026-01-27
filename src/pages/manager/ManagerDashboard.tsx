@@ -6,7 +6,8 @@ import {
   getVendorRequestsByTenant, 
   getTripsByTenant, 
   getVendorsByTenant,
-  getUsersByTenant
+  getUsersByTenant,
+  getProductsByTenant
 } from '@/data/mockData';
 
 export default function ManagerDashboard() {
@@ -18,11 +19,12 @@ export default function ManagerDashboard() {
   const requests = getVendorRequestsByTenant(tenant.id);
   const trips = getTripsByTenant(tenant.id);
   const vendors = getVendorsByTenant(tenant.id);
-  const teamMembers = getUsersByTenant(tenant.id);
+  const products = getProductsByTenant(tenant.id);
 
   const pendingRequests = requests.filter(r => r.status === 'pending').length;
   const todayRequests = requests.length;
   const activeTrips = trips.filter(t => t.status !== 'completed').length;
+  const activeProducts = products.filter(p => p.status === 'active').length;
 
   const stats = [
     { 
@@ -33,11 +35,11 @@ export default function ManagerDashboard() {
       onClick: () => navigate('/manager/requests')
     },
     { 
-      label: "Today's Requests", 
-      value: todayRequests, 
+      label: 'Active Products', 
+      value: activeProducts, 
       icon: Package, 
       color: 'bg-blue-500',
-      onClick: () => navigate('/manager/requests')
+      onClick: () => navigate('/manager/products')
     },
     { 
       label: 'Active Trips', 
@@ -47,8 +49,8 @@ export default function ManagerDashboard() {
       onClick: () => navigate('/manager/trips')
     },
     { 
-      label: 'Team Members', 
-      value: teamMembers.length, 
+      label: 'Total Vendors', 
+      value: vendors.length, 
       icon: Users, 
       color: 'bg-purple-500',
       onClick: undefined

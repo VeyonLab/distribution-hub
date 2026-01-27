@@ -29,14 +29,14 @@ export const users: MockUser[] = [
 
 // === PRODUCTS (Alpha Distributors) ===
 export const products: Product[] = [
-  { id: 'prod-1', name: 'Rice 25kg', unit: 'bags', tenantId: 'tenant-1' },
-  { id: 'prod-2', name: 'Wheat Flour 10kg', unit: 'bags', tenantId: 'tenant-1' },
-  { id: 'prod-3', name: 'Sugar 5kg', unit: 'packs', tenantId: 'tenant-1' },
-  { id: 'prod-4', name: 'Cooking Oil 5L', unit: 'cans', tenantId: 'tenant-1' },
-  { id: 'prod-5', name: 'Dal Toor 1kg', unit: 'packs', tenantId: 'tenant-1' },
-  { id: 'prod-6', name: 'Salt 1kg', unit: 'packs', tenantId: 'tenant-1' },
-  { id: 'prod-7', name: 'Tea 500g', unit: 'boxes', tenantId: 'tenant-1' },
-  { id: 'prod-8', name: 'Soap Bar', unit: 'pieces', tenantId: 'tenant-1' },
+  { id: 'prod-1', name: 'Rice 25kg', unit: 'bags', tenantId: 'tenant-1', status: 'active' },
+  { id: 'prod-2', name: 'Wheat Flour 10kg', unit: 'bags', tenantId: 'tenant-1', status: 'active' },
+  { id: 'prod-3', name: 'Sugar 5kg', unit: 'packs', tenantId: 'tenant-1', status: 'active' },
+  { id: 'prod-4', name: 'Cooking Oil 5L', unit: 'cans', tenantId: 'tenant-1', status: 'active' },
+  { id: 'prod-5', name: 'Dal Toor 1kg', unit: 'packs', tenantId: 'tenant-1', status: 'active' },
+  { id: 'prod-6', name: 'Salt 1kg', unit: 'packs', tenantId: 'tenant-1', status: 'inactive' },
+  { id: 'prod-7', name: 'Tea 500g', unit: 'boxes', tenantId: 'tenant-1', status: 'active' },
+  { id: 'prod-8', name: 'Soap Bar', unit: 'pieces', tenantId: 'tenant-1', status: 'inactive' },
 ];
 
 // === VENDORS (Alpha Distributors - 6 vendors) ===
