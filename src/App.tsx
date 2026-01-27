@@ -21,6 +21,8 @@ import UserDetailPage from "@/pages/admin/UserDetailPage";
 import ManagerLayout from "@/pages/manager/ManagerLayout";
 import ManagerDashboard from "@/pages/manager/ManagerDashboard";
 import ManagerRequests from "@/pages/manager/ManagerRequests";
+import ManagerRequestDetailPage from "@/pages/manager/ManagerRequestDetailPage";
+import ManagerConsolidatedPage from "@/pages/manager/ManagerConsolidatedPage";
 import ManagerTrips from "@/pages/manager/ManagerTrips";
 import ManagerTeamPage from "@/pages/manager/ManagerTeamPage";
 import ManagerInviteUserPage from "@/pages/manager/ManagerInviteUserPage";
@@ -127,6 +129,8 @@ function AppRoutes() {
       >
         <Route index element={<ManagerDashboard />} />
         <Route path="requests" element={<ManagerRequests />} />
+        <Route path="requests/consolidated" element={<ManagerConsolidatedPage />} />
+        <Route path="requests/:requestId" element={<ManagerRequestDetailPage />} />
         <Route path="trips" element={<ManagerTrips />} />
         <Route path="team" element={<ManagerTeamPage />} />
         <Route path="team/invite" element={<ManagerInviteUserPage />} />
