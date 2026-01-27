@@ -40,8 +40,11 @@ import ManagerEditRoutePage from "@/pages/manager/ManagerEditRoutePage";
 // Salesman Pages
 import SalesmanLayout from "@/pages/salesman/SalesmanLayout";
 import SalesmanDashboard from "@/pages/salesman/SalesmanDashboard";
-import SalesmanCreateRequest from "@/pages/salesman/SalesmanCreateRequest";
-import SalesmanMyRequests from "@/pages/salesman/SalesmanMyRequests";
+import SalesmanVendorsPage from "@/pages/salesman/SalesmanVendorsPage";
+import SalesmanVendorDetailPage from "@/pages/salesman/SalesmanVendorDetailPage";
+import SalesmanCreateRequestPage from "@/pages/salesman/SalesmanCreateRequestPage";
+import SalesmanRequestsPage from "@/pages/salesman/SalesmanRequestsPage";
+import SalesmanRequestDetailPage from "@/pages/salesman/SalesmanRequestDetailPage";
 
 // Driver Pages
 import DriverLayout from "@/pages/driver/DriverLayout";
@@ -151,8 +154,11 @@ function AppRoutes() {
         }
       >
         <Route index element={<SalesmanDashboard />} />
-        <Route path="create" element={<SalesmanCreateRequest />} />
-        <Route path="requests" element={<SalesmanMyRequests />} />
+        <Route path="vendors" element={<SalesmanVendorsPage />} />
+        <Route path="vendors/:vendorId" element={<SalesmanVendorDetailPage />} />
+        <Route path="create/:vendorId" element={<SalesmanCreateRequestPage />} />
+        <Route path="requests" element={<SalesmanRequestsPage />} />
+        <Route path="requests/:requestId" element={<SalesmanRequestDetailPage />} />
       </Route>
 
       {/* Driver Routes */}

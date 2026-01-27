@@ -53,7 +53,7 @@ export interface VendorRequest {
   vendorId: string;
   salesmanId: string;
   items: VendorRequestItem[];
-  status: 'pending' | 'batched' | 'in_transit' | 'delivered';
+  status: 'draft' | 'pending' | 'batched' | 'in_transit' | 'delivered';
   createdAt: Date;
   tenantId: string;
 }
