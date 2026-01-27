@@ -1,0 +1,59 @@
+import { cn } from '@/lib/utils';
+
+type StatusType = 'pending' | 'batched' | 'in_transit' | 'delivered' | 'skipped' | 'scheduled' | 'in_progress' | 'completed';
+
+interface StatusBadgeProps {
+  status: StatusType;
+  className?: string;
+}
+
+const statusConfig: Record<StatusType, { label: string; className: string }> = {
+  pending: {
+    label: 'Pending',
+    className: 'bg-amber-100 text-amber-800 border-amber-200',
+  },
+  batched: {
+    label: 'Batched',
+    className: 'bg-blue-100 text-blue-800 border-blue-200',
+  },
+  in_transit: {
+    label: 'In Transit',
+    className: 'bg-purple-100 text-purple-800 border-purple-200',
+  },
+  delivered: {
+    label: 'Delivered',
+    className: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+  },
+  skipped: {
+    label: 'Skipped',
+    className: 'bg-gray-100 text-gray-800 border-gray-200',
+  },
+  scheduled: {
+    label: 'Scheduled',
+    className: 'bg-blue-100 text-blue-800 border-blue-200',
+  },
+  in_progress: {
+    label: 'In Progress',
+    className: 'bg-purple-100 text-purple-800 border-purple-200',
+  },
+  completed: {
+    label: 'Completed',
+    className: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+  },
+};
+
+export function StatusBadge({ status, className }: StatusBadgeProps) {
+  const config = statusConfig[status];
+  
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
+        config.className,
+        className
+      )}
+    >
+      {config.label}
+    </span>
+  );
+}
