@@ -62,7 +62,7 @@ export interface TripStop {
   id: string;
   vendorId: string;
   vendorRequestIds: string[];
-  deliveryStatus: 'pending' | 'delivered' | 'skipped';
+  deliveryStatus: 'pending' | 'partial' | 'delivered' | 'skipped';
   deliveredAt?: Date;
   order: number;
 }
@@ -70,9 +70,9 @@ export interface TripStop {
 export interface Trip {
   id: string;
   routeId: string;
-  driverId: string;
+  driverId: string | null; // null for draft trips
   stops: TripStop[];
-  status: 'scheduled' | 'in_progress' | 'completed';
+  status: 'draft' | 'scheduled' | 'in_progress' | 'completed';
   scheduledDate: Date;
   tenantId: string;
 }

@@ -27,7 +27,7 @@ export default function ManagerLayout() {
   };
 
   // Don't show bottom nav for detail/sub pages
-  if (location.pathname.includes('/team/') || location.pathname.includes('/products/') || location.pathname.includes('/vendors/') || location.pathname.includes('/routes/') || location.pathname.includes('/requests/')) {
+  if (location.pathname.includes('/team/') || location.pathname.includes('/products/') || location.pathname.includes('/vendors/') || location.pathname.includes('/routes/') || location.pathname.includes('/requests/') || location.pathname.includes('/trips/')) {
     return <Outlet />;
   }
 
