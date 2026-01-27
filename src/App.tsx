@@ -7,7 +7,10 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 
 // Pages
 import LoginPage from "@/pages/LoginPage";
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
+import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import SuperAdminDashboard from "@/pages/admin/SuperAdminDashboard";
+import TenantDetailPage from "@/pages/admin/TenantDetailPage";
 import ManagerLayout from "@/pages/manager/ManagerLayout";
 import ManagerDashboard from "@/pages/manager/ManagerDashboard";
 import ManagerRequests from "@/pages/manager/ManagerRequests";
@@ -37,23 +40,37 @@ function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode;
   return <>{children}</>;
 }
 
-function AppRoutes() {
+function RoleBasedRedirect() {
   const { isAuthenticated, user } = useAuth();
 
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  switch (user.role) {
+    case 'super_admin':
+      return <Navigate to="/admin" replace />;
+    case 'manager':
+      return <Navigate to="/manager" replace />;
+    case 'salesman':
+      return <Navigate to="/salesman" replace />;
+    case 'driver':
+      return <Navigate to="/driver" replace />;
+    default:
+      return <Navigate to="/login" replace />;
+  }
+}
+
+function AppRoutes() {
   return (
     <Routes>
-      {/* Login */}
+      {/* Public routes */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
       
-      {/* Root redirect */}
-      <Route 
-        path="/" 
-        element={
-          isAuthenticated && user 
-            ? <Navigate to={`/${user.role === 'super_admin' ? 'admin' : user.role}`} replace />
-            : <Navigate to="/login" replace />
-        } 
-      />
+      {/* Root redirect based on role */}
+      <Route path="/" element={<RoleBasedRedirect />} />
 
       {/* Super Admin Routes */}
       <Route 
@@ -61,6 +78,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute allowedRoles={['super_admin']}>
             <SuperAdminDashboard />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/admin/tenant/:tenantId" 
+        element={
+          <ProtectedRoute allowedRoles={['super_admin']}>
+            <TenantDetailPage />
           </ProtectedRoute>
         } 
       />

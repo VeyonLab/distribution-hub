@@ -1,10 +1,13 @@
-import { Building2, Users, TrendingUp, Package } from 'lucide-react';
+import { Building2, Users, TrendingUp, Package, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { tenants, users, vendorRequests, trips } from '@/data/mockData';
+import { tenants, users, vendorRequests, trips, getUsersByTenant, getVendorRequestsByTenant, getTripsByTenant } from '@/data/mockData';
 
 export default function SuperAdminDashboard() {
+  const navigate = useNavigate();
+  
   const totalTenants = tenants.length;
   const totalUsers = users.filter(u => u.role !== 'super_admin').length;
   const totalPendingRequests = vendorRequests.filter(r => r.status === 'pending').length;
@@ -42,16 +45,23 @@ export default function SuperAdminDashboard() {
           <h2 className="mb-3 text-lg font-semibold">Tenants</h2>
           <div className="space-y-3">
             {tenants.map((tenant) => {
-              const tenantUsers = users.filter(u => u.tenantId === tenant.id);
-              const tenantRequests = vendorRequests.filter(r => r.tenantId === tenant.id);
-              const tenantTrips = trips.filter(t => t.tenantId === tenant.id);
+              const tenantUsers = getUsersByTenant(tenant.id);
+              const tenantRequests = getVendorRequestsByTenant(tenant.id);
+              const tenantTrips = getTripsByTenant(tenant.id);
 
               return (
-                <Card key={tenant.id} className="animate-slide-up">
+                <Card 
+                  key={tenant.id} 
+                  className="animate-slide-up cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+                  onClick={() => navigate(`/admin/tenant/${tenant.id}`)}
+                >
                   <CardHeader className="pb-2">
-                    <CardTitle className="flex items-center gap-2 text-base">
-                      <Building2 className="h-4 w-4 text-accent" />
-                      {tenant.name}
+                    <CardTitle className="flex items-center justify-between text-base">
+                      <div className="flex items-center gap-2">
+                        <Building2 className="h-4 w-4 text-accent" />
+                        {tenant.name}
+                      </div>
+                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pt-0">

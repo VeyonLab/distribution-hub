@@ -6,19 +6,23 @@ export const tenants: Tenant[] = [
   { id: 'tenant-2', name: 'Beta Distributors', createdAt: new Date('2024-03-20') },
 ];
 
-// === USERS ===
-export const users: User[] = [
+// === USERS (with passwords for mock auth) ===
+export interface MockUser extends User {
+  password: string;
+}
+
+export const users: MockUser[] = [
   // Super Admin (no tenant)
-  { id: 'user-super', name: 'System Admin', email: 'admin@system.com', role: 'super_admin', tenantId: '' },
+  { id: 'user-super', name: 'System Admin', email: 'admin@system.com', password: 'admin123', role: 'super_admin', tenantId: '' },
   
   // Alpha Distributors Team
-  { id: 'user-mgr-1', name: 'Rajesh Kumar', email: 'rajesh@alpha.com', role: 'manager', tenantId: 'tenant-1', phone: '+91 98765 43210' },
-  { id: 'user-sales-1', name: 'Amit Sharma', email: 'amit@alpha.com', role: 'salesman', tenantId: 'tenant-1', phone: '+91 98765 43211' },
-  { id: 'user-sales-2', name: 'Priya Patel', email: 'priya@alpha.com', role: 'salesman', tenantId: 'tenant-1', phone: '+91 98765 43212' },
-  { id: 'user-driver-1', name: 'Suresh Yadav', email: 'suresh@alpha.com', role: 'driver', tenantId: 'tenant-1', phone: '+91 98765 43213' },
+  { id: 'user-mgr-1', name: 'Rajesh Kumar', email: 'rajesh@alpha.com', password: 'manager123', role: 'manager', tenantId: 'tenant-1', phone: '+91 98765 43210' },
+  { id: 'user-sales-1', name: 'Amit Sharma', email: 'amit@alpha.com', password: 'sales123', role: 'salesman', tenantId: 'tenant-1', phone: '+91 98765 43211' },
+  { id: 'user-sales-2', name: 'Priya Patel', email: 'priya@alpha.com', password: 'sales123', role: 'salesman', tenantId: 'tenant-1', phone: '+91 98765 43212' },
+  { id: 'user-driver-1', name: 'Suresh Yadav', email: 'suresh@alpha.com', password: 'driver123', role: 'driver', tenantId: 'tenant-1', phone: '+91 98765 43213' },
   
-  // Beta Distributors Team (minimal for now)
-  { id: 'user-mgr-2', name: 'Vikram Singh', email: 'vikram@beta.com', role: 'manager', tenantId: 'tenant-2' },
+  // Beta Distributors Team
+  { id: 'user-mgr-2', name: 'Vikram Singh', email: 'vikram@beta.com', password: 'manager123', role: 'manager', tenantId: 'tenant-2' },
 ];
 
 // === PRODUCTS (Alpha Distributors) ===
@@ -139,3 +143,11 @@ export const getVendorRequestsByTenant = (tenantId: string) => vendorRequests.fi
 export const getTripsByTenant = (tenantId: string) => trips.filter(t => t.tenantId === tenantId);
 export const getTripsByDriver = (driverId: string) => trips.filter(t => t.driverId === driverId);
 export const getVendorRequestsBySalesman = (salesmanId: string) => vendorRequests.filter(vr => vr.salesmanId === salesmanId);
+
+// Auth helper
+export const authenticateUser = (email: string, password: string): MockUser | null => {
+  const user = users.find(
+    u => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+  );
+  return user || null;
+};

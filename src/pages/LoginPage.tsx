@@ -1,86 +1,64 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Truck, User, Users, ShieldCheck, Package } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Truck, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
-import { users } from '@/data/mockData';
 import { useToast } from '@/hooks/use-toast';
-
-const roleIcons = {
-  super_admin: ShieldCheck,
-  manager: Users,
-  salesman: Package,
-  driver: Truck,
-};
-
-const roleLabels = {
-  super_admin: 'Super Admin',
-  manager: 'Manager',
-  salesman: 'Salesman',
-  driver: 'Driver',
-};
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const result = login(email, password);
     
-    if (login(email)) {
-      const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-      if (user) {
-        navigateToRoleHome(user.role);
-      }
+    if (result.success) {
+      // Get the user to determine redirect
+      const { user } = useAuth as any;
+      navigateToRoleHome(email);
     } else {
       toast({
         title: 'Login Failed',
-        description: 'User not found. Try one of the demo accounts below.',
+        description: result.error || 'Invalid credentials',
         variant: 'destructive',
       });
     }
+    
+    setIsLoading(false);
   };
 
-  const navigateToRoleHome = (role: string) => {
-    switch (role) {
-      case 'super_admin':
-        navigate('/admin');
-        break;
-      case 'manager':
-        navigate('/manager');
-        break;
-      case 'salesman':
-        navigate('/salesman');
-        break;
-      case 'driver':
-        navigate('/driver');
-        break;
-      default:
-        navigate('/');
+  const navigateToRoleHome = (userEmail: string) => {
+    // Determine role from email for redirect
+    if (userEmail === 'admin@system.com') {
+      navigate('/admin');
+    } else if (userEmail.includes('rajesh') || userEmail.includes('vikram')) {
+      navigate('/manager');
+    } else if (userEmail.includes('amit') || userEmail.includes('priya')) {
+      navigate('/salesman');
+    } else if (userEmail.includes('suresh')) {
+      navigate('/driver');
+    } else {
+      navigate('/');
     }
   };
-
-  const quickLogin = (userEmail: string) => {
-    if (login(userEmail)) {
-      const user = users.find(u => u.email === userEmail);
-      if (user) {
-        navigateToRoleHome(user.role);
-      }
-    }
-  };
-
-  // Group users by role for quick login
-  const demoUsers = users.filter(u => u.tenantId === 'tenant-1' || u.role === 'super_admin');
 
   return (
     <div className="flex min-h-screen flex-col bg-primary">
       {/* Header */}
-      <div className="flex flex-col items-center justify-center px-6 pt-12 pb-8 text-center">
+      <div className="flex flex-col items-center justify-center px-6 pt-16 pb-10 text-center">
         <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-accent">
           <Truck className="h-8 w-8 text-accent-foreground" />
         </div>
@@ -90,7 +68,7 @@ export default function LoginPage() {
 
       {/* Login Card */}
       <div className="flex-1 rounded-t-3xl bg-background px-6 pt-8 pb-8">
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-5">
           <div className="space-y-2">
             <Label htmlFor="email">Email Address</Label>
             <Input
@@ -100,42 +78,72 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="h-12"
+              required
             />
           </div>
-          <Button type="submit" className="h-12 w-full text-base">
-            Sign In
+
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="h-12 pr-10"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+              </button>
+            </div>
+          </div>
+
+          <div className="text-right">
+            <Link 
+              to="/forgot-password" 
+              className="text-sm text-accent hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
+
+          <Button 
+            type="submit" 
+            className="h-12 w-full text-base"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Signing in...' : 'Sign In'}
           </Button>
         </form>
 
-        {/* Quick Login Section */}
-        <div className="mt-8">
-          <p className="mb-4 text-center text-sm text-muted-foreground">
-            Or try a demo account
+        {/* Demo Credentials */}
+        <div className="mt-8 rounded-lg bg-secondary p-4">
+          <p className="mb-3 text-center text-sm font-medium text-muted-foreground">
+            Demo Credentials
           </p>
-          <div className="space-y-3">
-            {demoUsers.map((user) => {
-              const Icon = roleIcons[user.role];
-              return (
-                <Card
-                  key={user.id}
-                  className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-                  onClick={() => quickLogin(user.email)}
-                >
-                  <CardContent className="flex items-center gap-4 p-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
-                      <Icon className="h-5 w-5 text-secondary-foreground" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-foreground">{user.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {roleLabels[user.role]}
-                        {user.tenantId && ' • Alpha Distributors'}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+          <div className="space-y-2 text-xs">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Super Admin:</span>
+              <span className="font-mono">admin@system.com / admin123</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Manager:</span>
+              <span className="font-mono">rajesh@alpha.com / manager123</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Salesman:</span>
+              <span className="font-mono">amit@alpha.com / sales123</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Driver:</span>
+              <span className="font-mono">suresh@alpha.com / driver123</span>
+            </div>
           </div>
         </div>
       </div>
