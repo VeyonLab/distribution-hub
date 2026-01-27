@@ -32,6 +32,10 @@ import ManagerVendorsPage from "@/pages/manager/ManagerVendorsPage";
 import ManagerVendorDetailPage from "@/pages/manager/ManagerVendorDetailPage";
 import ManagerAddVendorPage from "@/pages/manager/ManagerAddVendorPage";
 import ManagerEditVendorPage from "@/pages/manager/ManagerEditVendorPage";
+import ManagerRoutesPage from "@/pages/manager/ManagerRoutesPage";
+import ManagerRouteDetailPage from "@/pages/manager/ManagerRouteDetailPage";
+import ManagerCreateRoutePage from "@/pages/manager/ManagerCreateRoutePage";
+import ManagerEditRoutePage from "@/pages/manager/ManagerEditRoutePage";
 
 // Salesman Pages
 import SalesmanLayout from "@/pages/salesman/SalesmanLayout";
@@ -131,6 +135,10 @@ function AppRoutes() {
         <Route path="vendors/add" element={<ManagerAddVendorPage />} />
         <Route path="vendors/:vendorId" element={<ManagerVendorDetailPage />} />
         <Route path="vendors/:vendorId/edit" element={<ManagerEditVendorPage />} />
+        <Route path="routes" element={<ManagerRoutesPage />} />
+        <Route path="routes/create" element={<ManagerCreateRoutePage />} />
+        <Route path="routes/:routeId" element={<ManagerRouteDetailPage />} />
+        <Route path="routes/:routeId/edit" element={<ManagerEditRoutePage />} />
       </Route>
 
       {/* Salesman Routes */}
