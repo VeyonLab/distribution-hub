@@ -9,19 +9,34 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import LoginPage from "@/pages/LoginPage";
 import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
-import SuperAdminDashboard from "@/pages/admin/SuperAdminDashboard";
+
+// Admin Pages
+import AdminLayout from "@/pages/admin/AdminLayout";
+import AdminTenantsTab from "@/pages/admin/AdminTenantsTab";
+import AdminUsersTab from "@/pages/admin/AdminUsersTab";
 import TenantDetailPage from "@/pages/admin/TenantDetailPage";
+import UserDetailPage from "@/pages/admin/UserDetailPage";
+
+// Manager Pages
 import ManagerLayout from "@/pages/manager/ManagerLayout";
 import ManagerDashboard from "@/pages/manager/ManagerDashboard";
 import ManagerRequests from "@/pages/manager/ManagerRequests";
 import ManagerTrips from "@/pages/manager/ManagerTrips";
+import ManagerTeamPage from "@/pages/manager/ManagerTeamPage";
+import ManagerInviteUserPage from "@/pages/manager/ManagerInviteUserPage";
+import ManagerTeamMemberPage from "@/pages/manager/ManagerTeamMemberPage";
+
+// Salesman Pages
 import SalesmanLayout from "@/pages/salesman/SalesmanLayout";
 import SalesmanDashboard from "@/pages/salesman/SalesmanDashboard";
 import SalesmanCreateRequest from "@/pages/salesman/SalesmanCreateRequest";
 import SalesmanMyRequests from "@/pages/salesman/SalesmanMyRequests";
+
+// Driver Pages
 import DriverLayout from "@/pages/driver/DriverLayout";
 import DriverDashboard from "@/pages/driver/DriverDashboard";
 import DriverRoute from "@/pages/driver/DriverRoute";
+
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -77,18 +92,15 @@ function AppRoutes() {
         path="/admin" 
         element={
           <ProtectedRoute allowedRoles={['super_admin']}>
-            <SuperAdminDashboard />
+            <AdminLayout />
           </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/admin/tenant/:tenantId" 
-        element={
-          <ProtectedRoute allowedRoles={['super_admin']}>
-            <TenantDetailPage />
-          </ProtectedRoute>
-        } 
-      />
+        }
+      >
+        <Route index element={<AdminTenantsTab />} />
+        <Route path="users" element={<AdminUsersTab />} />
+        <Route path="tenant/:tenantId" element={<TenantDetailPage />} />
+        <Route path="users/:userId" element={<UserDetailPage />} />
+      </Route>
 
       {/* Manager Routes */}
       <Route 
@@ -102,6 +114,9 @@ function AppRoutes() {
         <Route index element={<ManagerDashboard />} />
         <Route path="requests" element={<ManagerRequests />} />
         <Route path="trips" element={<ManagerTrips />} />
+        <Route path="team" element={<ManagerTeamPage />} />
+        <Route path="team/invite" element={<ManagerInviteUserPage />} />
+        <Route path="team/:userId" element={<ManagerTeamMemberPage />} />
       </Route>
 
       {/* Salesman Routes */}
