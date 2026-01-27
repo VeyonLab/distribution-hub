@@ -10,7 +10,8 @@ import {
   getVendorRequestsByTenant, 
   getVendorById, 
   getUserById,
-  getUsersByTenant
+  getUsersByTenant,
+  getProductById
 } from '@/data/mockData';
 
 export default function ManagerRequests() {
@@ -114,6 +115,10 @@ export default function ManagerRequests() {
           const vendor = getVendorById(request.vendorId);
           const salesman = getUserById(request.salesmanId);
           const totalItems = request.items.reduce((sum, item) => sum + item.quantity, 0);
+          const totalAmount = request.items.reduce((sum, item) => {
+            const product = getProductById(item.productId);
+            return sum + (product ? product.price * item.quantity : 0);
+          }, 0);
 
           return (
             <Card 
@@ -130,6 +135,9 @@ export default function ManagerRequests() {
                     <p className="font-medium truncate">{vendor?.name || 'Unknown Vendor'}</p>
                     <p className="text-xs text-muted-foreground truncate">
                       by {salesman?.name || 'Unknown'} • {request.items.length} products • {totalItems} items
+                    </p>
+                    <p className="text-sm font-semibold text-accent">
+                      ₹{totalAmount.toLocaleString('en-IN')}
                     </p>
                   </div>
                 </div>
