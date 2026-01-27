@@ -14,6 +14,7 @@ import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import AdminLayout from "@/pages/admin/AdminLayout";
 import AdminTenantsTab from "@/pages/admin/AdminTenantsTab";
 import AdminUsersTab from "@/pages/admin/AdminUsersTab";
+import AdminGlobalOverviewPage from "@/pages/admin/AdminGlobalOverviewPage";
 import TenantDetailPage from "@/pages/admin/TenantDetailPage";
 import UserDetailPage from "@/pages/admin/UserDetailPage";
 
@@ -26,6 +27,8 @@ import ManagerConsolidatedPage from "@/pages/manager/ManagerConsolidatedPage";
 import ManagerTrips from "@/pages/manager/ManagerTrips";
 import ManagerTripDetailPage from "@/pages/manager/ManagerTripDetailPage";
 import ManagerCreateTripPage from "@/pages/manager/ManagerCreateTripPage";
+import ManagerDeliveryMonitoringPage from "@/pages/manager/ManagerDeliveryMonitoringPage";
+import ManagerTripMonitoringDetailPage from "@/pages/manager/ManagerTripMonitoringDetailPage";
 import ManagerTeamPage from "@/pages/manager/ManagerTeamPage";
 import ManagerInviteUserPage from "@/pages/manager/ManagerInviteUserPage";
 import ManagerTeamMemberPage from "@/pages/manager/ManagerTeamMemberPage";
@@ -116,6 +119,7 @@ function AppRoutes() {
         }
       >
         <Route index element={<AdminTenantsTab />} />
+        <Route path="overview" element={<AdminGlobalOverviewPage />} />
         <Route path="users" element={<AdminUsersTab />} />
         <Route path="tenant/:tenantId" element={<TenantDetailPage />} />
         <Route path="users/:userId" element={<UserDetailPage />} />
@@ -137,6 +141,8 @@ function AppRoutes() {
         <Route path="trips" element={<ManagerTrips />} />
         <Route path="trips/create" element={<ManagerCreateTripPage />} />
         <Route path="trips/:tripId" element={<ManagerTripDetailPage />} />
+        <Route path="monitoring" element={<ManagerDeliveryMonitoringPage />} />
+        <Route path="monitoring/:tripId" element={<ManagerTripMonitoringDetailPage />} />
         <Route path="team" element={<ManagerTeamPage />} />
         <Route path="team/invite" element={<ManagerInviteUserPage />} />
         <Route path="team/:userId" element={<ManagerTeamMemberPage />} />
