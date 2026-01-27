@@ -162,7 +162,9 @@ export default function SalesmanCreateRequestPage() {
                     <div key={item.productId} className="flex items-center justify-between rounded-lg bg-secondary/50 p-3">
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{product.name}</p>
-                        <p className="text-xs text-muted-foreground">{product.unit}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {product.unit} • <span className="text-accent font-medium">₹{product.price.toLocaleString('en-IN')}</span>
+                        </p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Button
@@ -225,7 +227,9 @@ export default function SalesmanCreateRequestPage() {
                   >
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">{product.name}</p>
-                      <p className="text-xs text-muted-foreground">{product.unit}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {product.unit} • <span className="font-medium">₹{product.price.toLocaleString('en-IN')}</span>
+                      </p>
                     </div>
                     {inCart ? (
                       <span className="text-xs font-medium text-accent">

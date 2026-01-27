@@ -21,6 +21,7 @@ export default function ManagerEditProductPage() {
 
   const [name, setName] = useState(product?.name || '');
   const [unit, setUnit] = useState(product?.unit || '');
+  const [price, setPrice] = useState(product?.price?.toString() || '');
   const [status, setStatus] = useState<'active' | 'inactive'>(product?.status || 'active');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -43,10 +44,20 @@ export default function ManagerEditProductPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name.trim() || !unit.trim()) {
+    if (!name.trim() || !unit.trim() || !price.trim()) {
       toast({
         title: 'Missing Information',
-        description: 'Please enter both name and unit.',
+        description: 'Please enter name, unit, and price.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const priceValue = parseFloat(price);
+    if (isNaN(priceValue) || priceValue < 0) {
+      toast({
+        title: 'Invalid Price',
+        description: 'Please enter a valid price.',
         variant: 'destructive',
       });
       return;
@@ -146,6 +157,23 @@ export default function ManagerEditProductPage() {
                   The measurement unit for this product
                 </p>
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="price">Price (₹)</Label>
+                <Input
+                  id="price"
+                  type="number"
+                  placeholder="e.g., 250"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="h-12"
+                  min="0"
+                  step="0.01"
+                  required
+                />
+                <p className="text-xs text-muted-foreground">
+                  Price per unit in rupees
+                </p>
+              </div>
             </CardContent>
           </Card>
 
@@ -153,7 +181,7 @@ export default function ManagerEditProductPage() {
           <Button 
             type="submit" 
             className="w-full gap-2"
-            disabled={isLoading || !name.trim() || !unit.trim()}
+            disabled={isLoading || !name.trim() || !unit.trim() || !price.trim()}
           >
             <Save className="h-4 w-4" />
             {isLoading ? 'Saving Changes...' : 'Save Changes'}
