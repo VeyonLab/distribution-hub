@@ -79,6 +79,15 @@ export default function SalesmanCreateRequestPage() {
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+  // Calculate line item total (price × quantity)
+  const getLineTotal = (productId: string, quantity: number): number => {
+    const product = getProductById(productId);
+    return product ? product.price * quantity : 0;
+  };
+
+  // Calculate grand total
+  const grandTotal = cartItems.reduce((sum, item) => sum + getLineTotal(item.productId, item.quantity), 0);
+
   const handleSaveDraft = async () => {
     if (cartItems.length === 0) {
       toast({
@@ -163,7 +172,7 @@ export default function SalesmanCreateRequestPage() {
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{product.name}</p>
                         <p className="text-xs text-muted-foreground">
-                          {product.unit} • <span className="text-accent font-medium">₹{product.price.toLocaleString('en-IN')}</span>
+                          ₹{product.price.toLocaleString('en-IN')} × {item.quantity} = <span className="text-accent font-semibold">₹{getLineTotal(item.productId, item.quantity).toLocaleString('en-IN')}</span>
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
@@ -202,6 +211,12 @@ export default function SalesmanCreateRequestPage() {
                     </div>
                   );
                 })}
+                
+                {/* Grand Total */}
+                <div className="mt-3 flex items-center justify-between border-t pt-3">
+                  <span className="font-medium">Total Amount</span>
+                  <span className="text-lg font-bold text-accent">₹{grandTotal.toLocaleString('en-IN')}</span>
+                </div>
               </CardContent>
             </Card>
           )}
