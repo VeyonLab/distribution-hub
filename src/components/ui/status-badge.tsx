@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-type StatusType = 'pending' | 'batched' | 'in_transit' | 'delivered' | 'skipped' | 'scheduled' | 'in_progress' | 'completed';
+type StatusType = 'draft' | 'pending' | 'batched' | 'in_transit' | 'delivered' | 'skipped' | 'scheduled' | 'in_progress' | 'completed' | 'active' | 'inactive';
 
 interface StatusBadgeProps {
   status: StatusType;
@@ -8,6 +8,10 @@ interface StatusBadgeProps {
 }
 
 const statusConfig: Record<StatusType, { label: string; className: string }> = {
+  draft: {
+    label: 'Draft',
+    className: 'bg-gray-100 text-gray-800 border-gray-200',
+  },
   pending: {
     label: 'Pending',
     className: 'bg-amber-100 text-amber-800 border-amber-200',
@@ -40,10 +44,18 @@ const statusConfig: Record<StatusType, { label: string; className: string }> = {
     label: 'Completed',
     className: 'bg-emerald-100 text-emerald-800 border-emerald-200',
   },
+  active: {
+    label: 'Active',
+    className: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+  },
+  inactive: {
+    label: 'Inactive',
+    className: 'bg-gray-100 text-gray-800 border-gray-200',
+  },
 };
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
-  const config = statusConfig[status];
+  const config = statusConfig[status] || { label: status, className: 'bg-gray-100 text-gray-800 border-gray-200' };
   
   return (
     <span

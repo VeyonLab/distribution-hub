@@ -1,4 +1,4 @@
-import { LayoutDashboard, PlusCircle, FileText } from 'lucide-react';
+import { LayoutDashboard, Store, FileText } from 'lucide-react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const salesmanNavItems: NavItem[] = [
   { to: '/salesman', label: 'Home', icon: LayoutDashboard },
-  { to: '/salesman/create', label: 'New Request', icon: PlusCircle },
+  { to: '/salesman/vendors', label: 'Vendors', icon: Store },
   { to: '/salesman/requests', label: 'My Requests', icon: FileText },
 ];
 
@@ -16,10 +16,15 @@ export default function SalesmanLayout() {
   const location = useLocation();
 
   const getPageTitle = () => {
-    if (location.pathname === '/salesman/create') return 'Create Request';
+    if (location.pathname === '/salesman/vendors') return 'Vendors';
     if (location.pathname === '/salesman/requests') return 'My Requests';
     return 'Salesman';
   };
+
+  // Don't show bottom nav for detail/create pages
+  if (location.pathname.includes('/vendors/') || location.pathname.includes('/create/') || location.pathname.includes('/requests/')) {
+    return <Outlet />;
+  }
 
   return (
     <MobileLayout
