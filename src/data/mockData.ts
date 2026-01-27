@@ -6,23 +6,25 @@ export const tenants: Tenant[] = [
   { id: 'tenant-2', name: 'Beta Distributors', createdAt: new Date('2024-03-20') },
 ];
 
-// === USERS (with passwords for mock auth) ===
+// === USERS (with passwords and status for mock auth) ===
 export interface MockUser extends User {
   password: string;
+  status: 'active' | 'inactive';
 }
 
 export const users: MockUser[] = [
   // Super Admin (no tenant)
-  { id: 'user-super', name: 'System Admin', email: 'admin@system.com', password: 'admin123', role: 'super_admin', tenantId: '' },
+  { id: 'user-super', name: 'System Admin', email: 'admin@system.com', password: 'admin123', role: 'super_admin', tenantId: '', status: 'active' },
   
   // Alpha Distributors Team
-  { id: 'user-mgr-1', name: 'Rajesh Kumar', email: 'rajesh@alpha.com', password: 'manager123', role: 'manager', tenantId: 'tenant-1', phone: '+91 98765 43210' },
-  { id: 'user-sales-1', name: 'Amit Sharma', email: 'amit@alpha.com', password: 'sales123', role: 'salesman', tenantId: 'tenant-1', phone: '+91 98765 43211' },
-  { id: 'user-sales-2', name: 'Priya Patel', email: 'priya@alpha.com', password: 'sales123', role: 'salesman', tenantId: 'tenant-1', phone: '+91 98765 43212' },
-  { id: 'user-driver-1', name: 'Suresh Yadav', email: 'suresh@alpha.com', password: 'driver123', role: 'driver', tenantId: 'tenant-1', phone: '+91 98765 43213' },
+  { id: 'user-mgr-1', name: 'Rajesh Kumar', email: 'rajesh@alpha.com', password: 'manager123', role: 'manager', tenantId: 'tenant-1', phone: '+91 98765 43210', status: 'active' },
+  { id: 'user-sales-1', name: 'Amit Sharma', email: 'amit@alpha.com', password: 'sales123', role: 'salesman', tenantId: 'tenant-1', phone: '+91 98765 43211', status: 'active' },
+  { id: 'user-sales-2', name: 'Priya Patel', email: 'priya@alpha.com', password: 'sales123', role: 'salesman', tenantId: 'tenant-1', phone: '+91 98765 43212', status: 'active' },
+  { id: 'user-driver-1', name: 'Suresh Yadav', email: 'suresh@alpha.com', password: 'driver123', role: 'driver', tenantId: 'tenant-1', phone: '+91 98765 43213', status: 'active' },
   
   // Beta Distributors Team
-  { id: 'user-mgr-2', name: 'Vikram Singh', email: 'vikram@beta.com', password: 'manager123', role: 'manager', tenantId: 'tenant-2' },
+  { id: 'user-mgr-2', name: 'Vikram Singh', email: 'vikram@beta.com', password: 'manager123', role: 'manager', tenantId: 'tenant-2', status: 'active' },
+  { id: 'user-sales-3', name: 'Neha Gupta', email: 'neha@beta.com', password: 'sales123', role: 'salesman', tenantId: 'tenant-2', phone: '+91 98765 43220', status: 'inactive' },
 ];
 
 // === PRODUCTS (Alpha Distributors) ===
@@ -143,6 +145,9 @@ export const getVendorRequestsByTenant = (tenantId: string) => vendorRequests.fi
 export const getTripsByTenant = (tenantId: string) => trips.filter(t => t.tenantId === tenantId);
 export const getTripsByDriver = (driverId: string) => trips.filter(t => t.driverId === driverId);
 export const getVendorRequestsBySalesman = (salesmanId: string) => vendorRequests.filter(vr => vr.salesmanId === salesmanId);
+
+// Get all non-super-admin users
+export const getAllTenantUsers = () => users.filter(u => u.role !== 'super_admin');
 
 // Auth helper
 export const authenticateUser = (email: string, password: string): MockUser | null => {
