@@ -18,7 +18,7 @@ export default function ManagerLayout() {
   const location = useLocation();
 
   const getPageTitle = () => {
-    if (location.pathname === '/manager/requests') return 'Vendor Requests';
+    if (location.pathname === '/manager/requests') return 'Requests Inbox';
     if (location.pathname === '/manager/trips') return 'Manage Trips';
     if (location.pathname === '/manager/products') return 'Products';
     if (location.pathname === '/manager/vendors') return 'Vendors';
@@ -27,7 +27,7 @@ export default function ManagerLayout() {
   };
 
   // Don't show bottom nav for detail/sub pages
-  if (location.pathname.includes('/team/') || location.pathname.includes('/products/') || location.pathname.includes('/vendors/') || location.pathname.includes('/routes/')) {
+  if (location.pathname.includes('/team/') || location.pathname.includes('/products/') || location.pathname.includes('/vendors/') || location.pathname.includes('/routes/') || location.pathname.includes('/requests/')) {
     return <Outlet />;
   }
 
