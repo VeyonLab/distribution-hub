@@ -21,6 +21,7 @@ export interface Product {
   id: string;
   name: string;
   unit: string;
+  price: number;
   tenantId: string;
   status: 'active' | 'inactive';
 }
