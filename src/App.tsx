@@ -28,6 +28,10 @@ import ManagerTeamMemberPage from "@/pages/manager/ManagerTeamMemberPage";
 import ManagerProductsPage from "@/pages/manager/ManagerProductsPage";
 import ManagerAddProductPage from "@/pages/manager/ManagerAddProductPage";
 import ManagerEditProductPage from "@/pages/manager/ManagerEditProductPage";
+import ManagerVendorsPage from "@/pages/manager/ManagerVendorsPage";
+import ManagerVendorDetailPage from "@/pages/manager/ManagerVendorDetailPage";
+import ManagerAddVendorPage from "@/pages/manager/ManagerAddVendorPage";
+import ManagerEditVendorPage from "@/pages/manager/ManagerEditVendorPage";
 
 // Salesman Pages
 import SalesmanLayout from "@/pages/salesman/SalesmanLayout";
@@ -123,6 +127,10 @@ function AppRoutes() {
         <Route path="products" element={<ManagerProductsPage />} />
         <Route path="products/add" element={<ManagerAddProductPage />} />
         <Route path="products/:productId" element={<ManagerEditProductPage />} />
+        <Route path="vendors" element={<ManagerVendorsPage />} />
+        <Route path="vendors/add" element={<ManagerAddVendorPage />} />
+        <Route path="vendors/:vendorId" element={<ManagerVendorDetailPage />} />
+        <Route path="vendors/:vendorId/edit" element={<ManagerEditVendorPage />} />
       </Route>
 
       {/* Salesman Routes */}

@@ -1,0 +1,194 @@
+import { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Store, Save, MapPin, Phone } from 'lucide-react';
+import { MobileLayout } from '@/components/layout/MobileLayout';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { MapPlaceholder } from '@/components/MapPlaceholder';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+import { getVendorById } from '@/data/mockData';
+
+export default function ManagerEditVendorPage() {
+  const { vendorId } = useParams<{ vendorId: string }>();
+  const { tenant } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const vendor = vendorId ? getVendorById(vendorId) : null;
+
+  const [name, setName] = useState(vendor?.name || '');
+  const [address, setAddress] = useState(vendor?.address || '');
+  const [phone, setPhone] = useState(vendor?.contactPhone || '');
+  const [latitude, setLatitude] = useState(vendor?.latitude.toString() || '19.0760');
+  const [longitude, setLongitude] = useState(vendor?.longitude.toString() || '72.8777');
+  const [isLoading, setIsLoading] = useState(false);
+
+  if (!vendor || vendor.tenantId !== tenant?.id) {
+    return (
+      <MobileLayout
+        header={<PageHeader title="Vendor Not Found" showBack showLogout />}
+      >
+        <div className="flex flex-col items-center justify-center p-8 text-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
+          <Store className="mb-4 h-16 w-16 text-muted-foreground/50" />
+          <p className="font-medium">Vendor not found</p>
+          <Button variant="outline" className="mt-4" onClick={() => navigate('/manager/vendors')}>
+            Go Back
+          </Button>
+        </div>
+      </MobileLayout>
+    );
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!name.trim() || !address.trim()) {
+      toast({
+        title: 'Missing Information',
+        description: 'Please enter vendor name and address.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const lat = parseFloat(latitude);
+    const lng = parseFloat(longitude);
+    
+    if (isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+      toast({
+        title: 'Invalid Coordinates',
+        description: 'Please enter valid latitude (-90 to 90) and longitude (-180 to 180).',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    toast({
+      title: 'Vendor Updated',
+      description: `${name} has been updated. (UI demo only)`,
+    });
+
+    setIsLoading(false);
+    navigate(`/manager/vendors/${vendor.id}`);
+  };
+
+  const lat = parseFloat(latitude) || vendor.latitude;
+  const lng = parseFloat(longitude) || vendor.longitude;
+
+  return (
+    <MobileLayout
+      header={<PageHeader title="Edit Vendor" subtitle={tenant?.name} showBack showLogout />}
+    >
+      <div className="p-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Basic Info */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Store className="h-4 w-4 text-accent" />
+                Vendor Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Vendor Name</Label>
+                <Input
+                  id="name"
+                  placeholder="e.g., Sharma General Store"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="h-12"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="address">Address</Label>
+                <Input
+                  id="address"
+                  placeholder="e.g., 12 MG Road, Andheri West"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="h-12"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="phone">Contact Phone (Optional)</Label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    id="phone"
+                    placeholder="+91 22 1234 5678"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="h-12 pl-9"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Location */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-base">
+                <MapPin className="h-4 w-4 text-accent" />
+                Location Coordinates
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="latitude">Latitude</Label>
+                  <Input
+                    id="latitude"
+                    type="number"
+                    step="any"
+                    placeholder="19.0760"
+                    value={latitude}
+                    onChange={(e) => setLatitude(e.target.value)}
+                    className="h-12 font-mono"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="longitude">Longitude</Label>
+                  <Input
+                    id="longitude"
+                    type="number"
+                    step="any"
+                    placeholder="72.8777"
+                    value={longitude}
+                    onChange={(e) => setLongitude(e.target.value)}
+                    className="h-12 font-mono"
+                    required
+                  />
+                </div>
+              </div>
+              <MapPlaceholder latitude={lat} longitude={lng} name={name} />
+            </CardContent>
+          </Card>
+
+          {/* Submit Button */}
+          <Button 
+            type="submit" 
+            className="w-full gap-2"
+            disabled={isLoading || !name.trim() || !address.trim()}
+          >
+            <Save className="h-4 w-4" />
+            {isLoading ? 'Saving Changes...' : 'Save Changes'}
+          </Button>
+        </form>
+      </div>
+    </MobileLayout>
+  );
+}
