@@ -1,4 +1,4 @@
-import { LayoutDashboard, FileText, Truck, Users } from 'lucide-react';
+import { LayoutDashboard, FileText, Truck, Package } from 'lucide-react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -9,7 +9,7 @@ const managerNavItems: NavItem[] = [
   { to: '/manager', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/manager/requests', label: 'Requests', icon: FileText },
   { to: '/manager/trips', label: 'Trips', icon: Truck },
-  { to: '/manager/team', label: 'Team', icon: Users },
+  { to: '/manager/products', label: 'Products', icon: Package },
 ];
 
 export default function ManagerLayout() {
@@ -19,12 +19,12 @@ export default function ManagerLayout() {
   const getPageTitle = () => {
     if (location.pathname === '/manager/requests') return 'Vendor Requests';
     if (location.pathname === '/manager/trips') return 'Manage Trips';
-    if (location.pathname === '/manager/team') return 'Team';
+    if (location.pathname === '/manager/products') return 'Products';
     return 'Manager Dashboard';
   };
 
-  // Don't show bottom nav for detail/invite pages
-  if (location.pathname.includes('/team/')) {
+  // Don't show bottom nav for detail/sub pages
+  if (location.pathname.includes('/team/') || location.pathname.includes('/products/')) {
     return <Outlet />;
   }
 
