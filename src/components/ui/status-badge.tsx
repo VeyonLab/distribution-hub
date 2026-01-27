@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-type StatusType = 'draft' | 'pending' | 'batched' | 'in_transit' | 'delivered' | 'skipped' | 'scheduled' | 'in_progress' | 'completed' | 'active' | 'inactive';
+type StatusType = 'draft' | 'pending' | 'batched' | 'in_transit' | 'delivered' | 'skipped' | 'scheduled' | 'in_progress' | 'completed' | 'active' | 'inactive' | 'partial';
 
 interface StatusBadgeProps {
   status: StatusType;
@@ -51,6 +51,10 @@ const statusConfig: Record<StatusType, { label: string; className: string }> = {
   inactive: {
     label: 'Inactive',
     className: 'bg-gray-100 text-gray-800 border-gray-200',
+  },
+  partial: {
+    label: 'Partial',
+    className: 'bg-amber-100 text-amber-800 border-amber-200',
   },
 };
 
