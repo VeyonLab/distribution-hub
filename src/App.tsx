@@ -54,6 +54,7 @@ import SalesmanRequestDetailPage from "@/pages/salesman/SalesmanRequestDetailPag
 import DriverLayout from "@/pages/driver/DriverLayout";
 import DriverDashboard from "@/pages/driver/DriverDashboard";
 import DriverRoute from "@/pages/driver/DriverRoute";
+import DriverStopDetailPage from "@/pages/driver/DriverStopDetailPage";
 
 import NotFound from "@/pages/NotFound";
 
@@ -180,6 +181,7 @@ function AppRoutes() {
       >
         <Route index element={<DriverDashboard />} />
         <Route path="route" element={<DriverRoute />} />
+        <Route path="stop/:stopId" element={<DriverStopDetailPage />} />
       </Route>
 
       {/* Catch-all */}
