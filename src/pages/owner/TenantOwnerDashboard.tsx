@@ -1,4 +1,4 @@
-import { GitBranch, Users, Package, Truck, ArrowLeftRight, FileText, Activity, Store } from 'lucide-react';
+import { GitBranch, Users, Package, Truck, ArrowLeftRight, FileText, Activity, Store, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
@@ -7,11 +7,13 @@ import {
   getUsersByTenant, 
   getVendorRequestsByTenant, 
   getTripsByTenant,
-  getStockTransfersByTenant
+  getStockTransfersByTenant,
+  getVendorRequestsByBranch,
+  getTripsByBranch
 } from '@/data/mockData';
 
 export default function TenantOwnerDashboard() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
 
   if (!tenant) return null;
@@ -24,8 +26,13 @@ export default function TenantOwnerDashboard() {
 
   const pendingTransfers = tenantTransfers.filter(t => t.status === 'pending').length;
   const activeTrips = tenantTrips.filter(t => t.status !== 'completed').length;
-
   const pendingRequests = tenantRequests.filter(r => r.status === 'pending').length;
+
+  // Home branch stats
+  const myBranchRequests = branch ? getVendorRequestsByBranch(branch.id).filter(r => r.status !== 'draft') : [];
+  const myBranchTrips = branch ? getTripsByBranch(branch.id) : [];
+  const myPendingRequests = myBranchRequests.filter(r => r.status === 'pending').length;
+  const myActiveTrips = myBranchTrips.filter(t => t.status !== 'completed').length;
 
   const stats = [
     { label: 'Active Branches', value: tenantBranches.length, icon: GitBranch, color: 'bg-blue-500', onClick: () => navigate('/owner/branches') },
@@ -55,9 +62,63 @@ export default function TenantOwnerDashboard() {
         ))}
       </div>
 
-      {/* Quick Actions */}
+      {/* My Branch Operations */}
+      {branch && (
+        <div>
+          <h2 className="mb-3 text-lg font-semibold">My Branch — {branch.name}</h2>
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate('/manager')}
+          >
+            <CardContent className="flex items-center gap-4 p-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                <Settings className="h-6 w-6 text-primary" />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium">Manage Branch Operations</p>
+                <p className="text-sm text-muted-foreground">
+                  {myPendingRequests} pending requests • {myActiveTrips} active trips
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+          <div className="mt-2 grid grid-cols-3 gap-2">
+            <Card 
+              className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+              onClick={() => navigate('/manager/requests')}
+            >
+              <CardContent className="flex flex-col items-center gap-1 p-3">
+                <FileText className="h-5 w-5 text-accent" />
+                <span className="text-xs font-medium">Requests</span>
+                <span className="text-xs text-muted-foreground">{myPendingRequests} pending</span>
+              </CardContent>
+            </Card>
+            <Card 
+              className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+              onClick={() => navigate('/manager/trips')}
+            >
+              <CardContent className="flex flex-col items-center gap-1 p-3">
+                <Truck className="h-5 w-5 text-accent" />
+                <span className="text-xs font-medium">Trips</span>
+                <span className="text-xs text-muted-foreground">{myActiveTrips} active</span>
+              </CardContent>
+            </Card>
+            <Card 
+              className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+              onClick={() => navigate('/manager/products')}
+            >
+              <CardContent className="flex flex-col items-center gap-1 p-3">
+                <Package className="h-5 w-5 text-accent" />
+                <span className="text-xs font-medium">Products</span>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      )}
+
+      {/* Admin Quick Actions */}
       <div>
-        <h2 className="mb-3 text-lg font-semibold">Quick Actions</h2>
+        <h2 className="mb-3 text-lg font-semibold">Admin Overview</h2>
         <div className="space-y-3">
           <Card 
             className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
@@ -68,7 +129,7 @@ export default function TenantOwnerDashboard() {
                 <FileText className="h-6 w-6 text-accent" />
               </div>
               <div>
-                <p className="font-medium">View All Requests</p>
+                <p className="font-medium">All Requests (Cross-Branch)</p>
                 <p className="text-sm text-muted-foreground">
                   {pendingRequests} pending across branches
                 </p>
@@ -139,11 +200,11 @@ export default function TenantOwnerDashboard() {
         <CardContent className="p-4">
           <h3 className="mb-2 font-medium">Branch Overview</h3>
           <div className="space-y-2 text-sm">
-            {tenantBranches.map(branch => {
-              const branchUsers = tenantUsers.filter(u => u.branchId === branch.id);
+            {tenantBranches.map(b => {
+              const branchUsers = tenantUsers.filter(u => u.branchId === b.id);
               return (
-                <div key={branch.id} className="flex justify-between">
-                  <span className="text-muted-foreground">{branch.name}</span>
+                <div key={b.id} className="flex justify-between">
+                  <span className="text-muted-foreground">{b.name}</span>
                   <span className="font-medium">{branchUsers.length} members</span>
                 </div>
               );

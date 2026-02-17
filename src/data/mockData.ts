@@ -23,8 +23,8 @@ export const users: MockUser[] = [
   // Super Admin (no tenant)
   { id: 'user-super', name: 'System Admin', email: 'admin@system.com', password: 'admin123', role: 'super_admin', tenantId: '', status: 'active' },
   
-  // Tenant Owner (Alpha Distributors - no branch, full tenant access)
-  { id: 'user-owner-1', name: 'Anil Mehta', email: 'anil@alpha.com', password: 'owner123', role: 'tenant_owner', tenantId: 'tenant-1', phone: '+91 98765 00000', status: 'active' },
+  // Tenant Owner (Alpha Distributors - based at Branch 1, full tenant access)
+  { id: 'user-owner-1', name: 'Anil Mehta', email: 'anil@alpha.com', password: 'owner123', role: 'tenant_owner', tenantId: 'tenant-1', branchId: 'branch-1', phone: '+91 98765 00000', status: 'active' },
 
   // Alpha Distributors - Branch 1 (Andheri Depot)
   { id: 'user-mgr-1', name: 'Rajesh Kumar', email: 'rajesh@alpha.com', password: 'manager123', role: 'manager', tenantId: 'tenant-1', branchId: 'branch-1', phone: '+91 98765 43210', status: 'active' },
