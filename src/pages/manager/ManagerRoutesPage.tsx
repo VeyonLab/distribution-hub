@@ -4,15 +4,15 @@ import { Route as RouteIcon, ChevronRight, Plus, MapPin } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { getRoutesByTenant, getVendorById } from '@/data/mockData';
+import { getRoutesByBranch, getVendorById } from '@/data/mockData';
 
 export default function ManagerRoutesPage() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const routes = getRoutesByTenant(tenant.id);
+  const routes = getRoutesByBranch(branch.id);
 
   return (
     <div className="space-y-4 p-4">

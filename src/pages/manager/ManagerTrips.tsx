@@ -5,18 +5,18 @@ import { Button } from '@/components/ui/button';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
-  getTripsByTenant, 
+  getTripsByBranch, 
   getRouteById, 
   getUserById
 } from '@/data/mockData';
 
 export default function ManagerTrips() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const trips = getTripsByTenant(tenant.id);
+  const trips = getTripsByBranch(branch.id);
 
   // Filter for today's trips
   const today = new Date();

@@ -10,11 +10,11 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { getRouteById, getVendorsByTenant, getVendorById } from '@/data/mockData';
+import { getRouteById, getVendorsByBranch, getVendorById } from '@/data/mockData';
 
 export default function ManagerEditRoutePage() {
   const { routeId } = useParams<{ routeId: string }>();
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -41,7 +41,7 @@ export default function ManagerEditRoutePage() {
     );
   }
 
-  const allVendors = getVendorsByTenant(tenant?.id || '');
+  const allVendors = branch ? getVendorsByBranch(branch.id) : [];
   const availableVendors = allVendors.filter(v => !selectedVendorIds.includes(v.id));
 
   const toggleVendor = (vendorId: string) => {

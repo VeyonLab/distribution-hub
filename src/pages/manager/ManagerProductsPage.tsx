@@ -6,17 +6,17 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/contexts/AuthContext';
-import { getProductsByTenant } from '@/data/mockData';
+import { getProductsByBranch } from '@/data/mockData';
 
 export default function ManagerProductsPage() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const products = getProductsByTenant(tenant.id);
+  const products = getProductsByBranch(branch.id);
 
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

@@ -4,16 +4,16 @@ import { Store, ChevronRight, Search, MapPin } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
-import { getVendorsByTenant } from '@/data/mockData';
+import { getVendorsByBranch } from '@/data/mockData';
 
 export default function SalesmanVendorsPage() {
-  const { tenant } = useAuth();
+  const { branch } = useAuth();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
 
-  if (!tenant) return null;
+  if (!branch) return null;
 
-  const vendors = getVendorsByTenant(tenant.id);
+  const vendors = getVendorsByBranch(branch.id);
 
   const filteredVendors = vendors.filter(vendor => {
     return vendor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
