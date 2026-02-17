@@ -59,6 +59,16 @@ import DriverDashboard from "@/pages/driver/DriverDashboard";
 import DriverRoute from "@/pages/driver/DriverRoute";
 import DriverStopDetailPage from "@/pages/driver/DriverStopDetailPage";
 
+// Tenant Owner Pages
+import TenantOwnerLayout from "@/pages/owner/TenantOwnerLayout";
+import TenantOwnerDashboard from "@/pages/owner/TenantOwnerDashboard";
+import OwnerBranchesPage from "@/pages/owner/OwnerBranchesPage";
+import OwnerBranchDetailPage from "@/pages/owner/OwnerBranchDetailPage";
+import OwnerAddBranchPage from "@/pages/owner/OwnerAddBranchPage";
+import OwnerEditBranchPage from "@/pages/owner/OwnerEditBranchPage";
+import OwnerTeamPage from "@/pages/owner/OwnerTeamPage";
+import OwnerTransfersPage from "@/pages/owner/OwnerTransfersPage";
+
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -87,6 +97,8 @@ function RoleBasedRedirect() {
   switch (user.role) {
     case 'super_admin':
       return <Navigate to="/admin" replace />;
+    case 'tenant_owner':
+      return <Navigate to="/owner" replace />;
     case 'manager':
       return <Navigate to="/manager" replace />;
     case 'salesman':
@@ -123,6 +135,24 @@ function AppRoutes() {
         <Route path="users" element={<AdminUsersTab />} />
         <Route path="tenant/:tenantId" element={<TenantDetailPage />} />
         <Route path="users/:userId" element={<UserDetailPage />} />
+      </Route>
+
+      {/* Tenant Owner Routes */}
+      <Route 
+        path="/owner" 
+        element={
+          <ProtectedRoute allowedRoles={['tenant_owner']}>
+            <TenantOwnerLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<TenantOwnerDashboard />} />
+        <Route path="branches" element={<OwnerBranchesPage />} />
+        <Route path="branches/add" element={<OwnerAddBranchPage />} />
+        <Route path="branches/:branchId" element={<OwnerBranchDetailPage />} />
+        <Route path="branches/:branchId/edit" element={<OwnerEditBranchPage />} />
+        <Route path="team" element={<OwnerTeamPage />} />
+        <Route path="transfers" element={<OwnerTransfersPage />} />
       </Route>
 
       {/* Manager Routes */}

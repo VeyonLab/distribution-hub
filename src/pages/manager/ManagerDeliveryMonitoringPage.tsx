@@ -4,17 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/contexts/AuthContext';
-import { getTripsByTenant, getRouteById, getUserById, getVendorById } from '@/data/mockData';
+import { getTripsByBranch, getRouteById, getUserById, getVendorById } from '@/data/mockData';
 import { useDriverDeliveryState } from '@/hooks/useDriverDeliveryState';
 
 export default function ManagerDeliveryMonitoringPage() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
   const { getStopStatus } = useDriverDeliveryState();
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const trips = getTripsByTenant(tenant.id);
+  const trips = getTripsByBranch(branch.id);
   
   // Filter for today's trips
   const today = new Date();

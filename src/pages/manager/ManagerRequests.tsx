@@ -7,24 +7,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
-  getVendorRequestsByTenant, 
+  getVendorRequestsByBranch, 
   getVendorById, 
   getUserById,
-  getUsersByTenant,
+  getUsersByBranch,
   getProductById
 } from '@/data/mockData';
 
 export default function ManagerRequests() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
   
   const [dateFilter, setDateFilter] = useState<string>('today');
   const [salesmanFilter, setSalesmanFilter] = useState<string>('all');
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const allRequests = getVendorRequestsByTenant(tenant.id);
-  const salesmen = getUsersByTenant(tenant.id).filter(u => u.role === 'salesman');
+  const allRequests = getVendorRequestsByBranch(branch.id);
+  const salesmen = getUsersByBranch(branch.id).filter(u => u.role === 'salesman');
 
   // Filter requests (exclude drafts - only show submitted)
   const filteredRequests = useMemo(() => {

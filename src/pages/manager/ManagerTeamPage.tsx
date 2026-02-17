@@ -4,23 +4,24 @@ import { Users, ChevronRight, UserPlus } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { getUsersByTenant } from '@/data/mockData';
+import { getUsersByBranch } from '@/data/mockData';
 import { UserRole } from '@/types';
 
 const roleLabels: Record<UserRole, string> = {
   super_admin: 'Super Admin',
+  tenant_owner: 'Distributor Admin',
   manager: 'Manager',
   salesman: 'Salesman',
   driver: 'Driver',
 };
 
 export default function ManagerTeamPage() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const teamMembers = getUsersByTenant(tenant.id);
+  const teamMembers = getUsersByBranch(branch.id);
   const activeCount = teamMembers.filter(u => u.status === 'active').length;
   const inactiveCount = teamMembers.filter(u => u.status === 'inactive').length;
 

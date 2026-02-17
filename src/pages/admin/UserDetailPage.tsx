@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 
 const roleLabels: Record<UserRole, string> = {
   super_admin: 'Super Admin',
+  tenant_owner: 'Distributor Admin',
   manager: 'Manager',
   salesman: 'Salesman',
   driver: 'Driver',

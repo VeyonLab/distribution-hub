@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { User, Tenant, AuthState } from '@/types';
-import { users, getTenantById, authenticateUser, tenants } from '@/data/mockData';
+import { User, Tenant, AuthState, Branch } from '@/types';
+import { users, getTenantById, authenticateUser, tenants, getBranchById } from '@/data/mockData';
 
 interface AuthContextType extends AuthState {
   login: (email: string, password: string) => { success: boolean; error?: string };
@@ -9,6 +9,8 @@ interface AuthContextType extends AuthState {
   viewingTenantId: string | null;
   setViewingTenant: (tenantId: string | null) => void;
   getActiveTenant: () => Tenant | null;
+  // Branch info for branch-scoped roles
+  branch: Branch | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,6 +21,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     tenant: null,
     isAuthenticated: false,
   });
+  const [branch, setBranch] = useState<Branch | null>(null);
   const [viewingTenantId, setViewingTenantId] = useState<string | null>(null);
 
   const login = (email: string, password: string): { success: boolean; error?: string } => {
@@ -29,12 +32,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const tenant = user.tenantId ? getTenantById(user.tenantId) || null : null;
+    const userBranch = user.branchId ? getBranchById(user.branchId) || null : null;
     
     setAuthState({
       user,
       tenant,
       isAuthenticated: true,
     });
+    setBranch(userBranch);
     
     // Reset viewing tenant on login
     setViewingTenantId(null);
@@ -48,22 +53,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       tenant: null,
       isAuthenticated: false,
     });
+    setBranch(null);
     setViewingTenantId(null);
   };
 
   const setViewingTenant = (tenantId: string | null) => {
-    // Only Super Admin can view other tenants
     if (authState.user?.role === 'super_admin') {
       setViewingTenantId(tenantId);
     }
   };
 
   const getActiveTenant = (): Tenant | null => {
-    // For Super Admin viewing a specific tenant
     if (authState.user?.role === 'super_admin' && viewingTenantId) {
       return getTenantById(viewingTenantId) || null;
     }
-    // For regular users, return their assigned tenant
     return authState.tenant;
   };
 
@@ -74,7 +77,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout, 
       viewingTenantId,
       setViewingTenant,
-      getActiveTenant
+      getActiveTenant,
+      branch,
     }}>
       {children}
     </AuthContext.Provider>

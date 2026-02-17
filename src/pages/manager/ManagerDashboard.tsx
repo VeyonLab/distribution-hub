@@ -3,23 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
-  getVendorRequestsByTenant, 
-  getTripsByTenant, 
-  getVendorsByTenant,
-  getUsersByTenant,
-  getProductsByTenant
+  getVendorRequestsByBranch, 
+  getTripsByBranch, 
+  getVendorsByBranch,
+  getProductsByBranch
 } from '@/data/mockData';
 
 export default function ManagerDashboard() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const requests = getVendorRequestsByTenant(tenant.id);
-  const trips = getTripsByTenant(tenant.id);
-  const vendors = getVendorsByTenant(tenant.id);
-  const products = getProductsByTenant(tenant.id);
+  const requests = getVendorRequestsByBranch(branch.id);
+  const trips = getTripsByBranch(branch.id);
+  const vendors = getVendorsByBranch(branch.id);
+  const products = getProductsByBranch(branch.id);
 
   const pendingRequests = requests.filter(r => r.status === 'pending').length;
   const todayRequests = requests.length;

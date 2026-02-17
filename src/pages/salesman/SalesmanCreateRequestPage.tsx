@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { getVendorById, getProductsByTenant, getProductById } from '@/data/mockData';
+import { getVendorById, getProductsByBranch, getProductById } from '@/data/mockData';
 import { Product } from '@/types';
 
 interface CartItem {
@@ -18,7 +18,7 @@ interface CartItem {
 
 export default function SalesmanCreateRequestPage() {
   const { vendorId } = useParams<{ vendorId: string }>();
-  const { user, tenant } = useAuth();
+  const { user, tenant, branch } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -26,7 +26,7 @@ export default function SalesmanCreateRequestPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const vendor = vendorId ? getVendorById(vendorId) : null;
-  const allProducts = tenant ? getProductsByTenant(tenant.id).filter(p => p.status === 'active') : [];
+  const allProducts = branch ? getProductsByBranch(branch.id).filter(p => p.status === 'active') : [];
 
   if (!vendor || vendor.tenantId !== tenant?.id) {
     return (

@@ -14,7 +14,7 @@ const managerNavItems: NavItem[] = [
 ];
 
 export default function ManagerLayout() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const location = useLocation();
 
   const getPageTitle = () => {
@@ -37,7 +37,7 @@ export default function ManagerLayout() {
       header={
         <PageHeader 
           title={getPageTitle()} 
-          subtitle={tenant?.name || ''} 
+          subtitle={branch ? `${tenant?.name} • ${branch.name}` : tenant?.name || ''} 
           showLogout 
         />
       }

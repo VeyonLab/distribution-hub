@@ -9,14 +9,14 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
-  getVendorRequestsByTenant, 
+  getVendorRequestsByBranch, 
   getVendorById, 
   getProductById,
   getUserById
 } from '@/data/mockData';
 
 export default function ManagerConsolidatedPage() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
   
   const [dateFilter, setDateFilter] = useState<string>('today');
@@ -24,7 +24,7 @@ export default function ManagerConsolidatedPage() {
   const [showRequestSelector, setShowRequestSelector] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
-  const allRequests = tenant ? getVendorRequestsByTenant(tenant.id) : [];
+  const allRequests = branch ? getVendorRequestsByBranch(branch.id) : [];
 
   // Filter requests by date (exclude drafts)
   const filteredRequests = useMemo(() => {

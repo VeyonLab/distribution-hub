@@ -5,16 +5,16 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { getVendorsByTenant } from '@/data/mockData';
+import { getVendorsByBranch } from '@/data/mockData';
 
 export default function ManagerVendorsPage() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const vendors = getVendorsByTenant(tenant.id);
+  const vendors = getVendorsByBranch(branch.id);
 
   const filteredVendors = vendors.filter(vendor => {
     return vendor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

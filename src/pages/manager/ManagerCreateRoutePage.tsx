@@ -10,10 +10,10 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { getVendorsByTenant, getVendorById } from '@/data/mockData';
+import { getVendorsByBranch, getVendorById } from '@/data/mockData';
 
 export default function ManagerCreateRoutePage() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -22,9 +22,9 @@ export default function ManagerCreateRoutePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const allVendors = getVendorsByTenant(tenant.id);
+  const allVendors = getVendorsByBranch(branch.id);
   const availableVendors = allVendors.filter(v => !selectedVendorIds.includes(v.id));
 
   const toggleVendor = (vendorId: string) => {
