@@ -1,4 +1,4 @@
-import { LayoutDashboard, FileText, Truck, Package, Activity } from 'lucide-react';
+import { LayoutDashboard, FileText, Truck, Package, Activity, ArrowLeftRight } from 'lucide-react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -10,7 +10,7 @@ const managerNavItems: NavItem[] = [
   { to: '/manager/requests', label: 'Requests', icon: FileText },
   { to: '/manager/trips', label: 'Trips', icon: Truck },
   { to: '/manager/monitoring', label: 'Monitor', icon: Activity },
-  { to: '/manager/products', label: 'Products', icon: Package },
+  { to: '/manager/transfers', label: 'Transfers', icon: ArrowLeftRight },
 ];
 
 export default function ManagerLayout() {
@@ -24,11 +24,12 @@ export default function ManagerLayout() {
     if (location.pathname === '/manager/products') return 'Products';
     if (location.pathname === '/manager/vendors') return 'Vendors';
     if (location.pathname === '/manager/routes') return 'Routes';
+    if (location.pathname === '/manager/transfers') return 'Stock Transfers';
     return 'Manager Dashboard';
   };
 
   // Don't show bottom nav for detail/sub pages
-  if (location.pathname.includes('/team/') || location.pathname.includes('/products/') || location.pathname.includes('/vendors/') || location.pathname.includes('/routes/') || location.pathname.includes('/requests/') || location.pathname.includes('/trips/') || location.pathname.match(/\/monitoring\/[^/]+$/)) {
+  if (location.pathname.includes('/team/') || location.pathname.includes('/products/') || location.pathname.includes('/vendors/') || location.pathname.includes('/routes/') || location.pathname.includes('/requests/') || location.pathname.includes('/trips/') || location.pathname.includes('/transfers/') || location.pathname.match(/\/monitoring\/[^/]+$/)) {
     return <Outlet />;
   }
 

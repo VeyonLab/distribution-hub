@@ -68,6 +68,15 @@ import OwnerAddBranchPage from "@/pages/owner/OwnerAddBranchPage";
 import OwnerEditBranchPage from "@/pages/owner/OwnerEditBranchPage";
 import OwnerTeamPage from "@/pages/owner/OwnerTeamPage";
 import OwnerTransfersPage from "@/pages/owner/OwnerTransfersPage";
+import OwnerRequestsPage from "@/pages/owner/OwnerRequestsPage";
+import OwnerTripsPage from "@/pages/owner/OwnerTripsPage";
+import OwnerProductsPage from "@/pages/owner/OwnerProductsPage";
+import OwnerVendorsPage from "@/pages/owner/OwnerVendorsPage";
+import OwnerMonitoringPage from "@/pages/owner/OwnerMonitoringPage";
+
+// Manager extra pages
+import ManagerTransfersPage from "@/pages/manager/ManagerTransfersPage";
+import ManagerCreateTransferPage from "@/pages/manager/ManagerCreateTransferPage";
 
 import NotFound from "@/pages/NotFound";
 
@@ -153,6 +162,12 @@ function AppRoutes() {
         <Route path="branches/:branchId/edit" element={<OwnerEditBranchPage />} />
         <Route path="team" element={<OwnerTeamPage />} />
         <Route path="transfers" element={<OwnerTransfersPage />} />
+        <Route path="requests" element={<OwnerRequestsPage />} />
+        <Route path="requests/:requestId" element={<ManagerRequestDetailPage />} />
+        <Route path="trips" element={<OwnerTripsPage />} />
+        <Route path="products" element={<OwnerProductsPage />} />
+        <Route path="vendors" element={<OwnerVendorsPage />} />
+        <Route path="monitoring" element={<OwnerMonitoringPage />} />
       </Route>
 
       {/* Manager Routes */}
@@ -187,6 +202,8 @@ function AppRoutes() {
         <Route path="routes/create" element={<ManagerCreateRoutePage />} />
         <Route path="routes/:routeId" element={<ManagerRouteDetailPage />} />
         <Route path="routes/:routeId/edit" element={<ManagerEditRoutePage />} />
+        <Route path="transfers" element={<ManagerTransfersPage />} />
+        <Route path="transfers/create" element={<ManagerCreateTransferPage />} />
       </Route>
 
       {/* Salesman Routes */}
