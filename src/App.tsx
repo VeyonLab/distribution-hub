@@ -140,10 +140,8 @@ function AppRoutes() {
         }
       >
         <Route index element={<AdminTenantsTab />} />
-        <Route path="overview" element={<AdminGlobalOverviewPage />} />
-        <Route path="users" element={<AdminUsersTab />} />
+        <Route path="distributors" element={<AdminTenantsTab />} />
         <Route path="tenant/:tenantId" element={<TenantDetailPage />} />
-        <Route path="users/:userId" element={<UserDetailPage />} />
       </Route>
 
       {/* Tenant Owner Routes */}
