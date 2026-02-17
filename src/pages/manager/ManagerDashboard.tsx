@@ -1,4 +1,4 @@
-import { FileText, Truck, Package, Users } from 'lucide-react';
+import { FileText, Truck, Package, Users, ArrowLeftRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
@@ -111,6 +111,23 @@ export default function ManagerDashboard() {
                 <p className="font-medium">Manage Trips</p>
                 <p className="text-sm text-muted-foreground">
                   Create and assign delivery trips
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate('/manager/transfers')}
+          >
+            <CardContent className="flex items-center gap-4 p-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10">
+                <ArrowLeftRight className="h-6 w-6 text-accent" />
+              </div>
+              <div>
+                <p className="font-medium">Stock Transfers</p>
+                <p className="text-sm text-muted-foreground">
+                  Request stock from other branches
                 </p>
               </div>
             </CardContent>
