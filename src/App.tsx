@@ -73,6 +73,7 @@ import OwnerTripsPage from "@/pages/owner/OwnerTripsPage";
 import OwnerProductsPage from "@/pages/owner/OwnerProductsPage";
 import OwnerVendorsPage from "@/pages/owner/OwnerVendorsPage";
 import OwnerMonitoringPage from "@/pages/owner/OwnerMonitoringPage";
+import OwnerSettingsPage from "@/pages/owner/OwnerSettingsPage";
 
 // Manager extra pages
 import ManagerTransfersPage from "@/pages/manager/ManagerTransfersPage";
@@ -169,6 +170,7 @@ function AppRoutes() {
         <Route path="vendors" element={<OwnerVendorsPage />} />
         <Route path="monitoring" element={<OwnerMonitoringPage />} />
         <Route path="monitoring/:tripId" element={<ManagerTripMonitoringDetailPage />} />
+        <Route path="settings" element={<OwnerSettingsPage />} />
       </Route>
 
       {/* Manager Routes (also accessible by tenant_owner for their home branch) */}

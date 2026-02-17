@@ -5,6 +5,10 @@ export type UserRole = 'super_admin' | 'tenant_owner' | 'manager' | 'salesman' |
 export interface Tenant {
   id: string;
   name: string;
+  address?: string;
+  gstNumber?: string;
+  panNumber?: string;
+  logo?: string;
   createdAt: Date;
 }
 
