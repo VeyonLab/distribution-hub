@@ -2,8 +2,8 @@ import { Tenant, User, Product, Vendor, Route, VendorRequest, Trip, TripStop, Br
 
 // === TENANTS ===
 export const tenants: Tenant[] = [
-  { id: 'tenant-1', name: 'Alpha Distributors', createdAt: new Date('2024-01-15') },
-  { id: 'tenant-2', name: 'Beta Distributors', createdAt: new Date('2024-03-20') },
+  { id: 'tenant-1', name: 'Alpha Distributors', address: '456 Industrial Area, Andheri East, Mumbai - 400069', gstNumber: '27AABCT1234F1ZH', panNumber: 'AABCT1234F', createdAt: new Date('2024-01-15') },
+  { id: 'tenant-2', name: 'Beta Distributors', address: '123 Commerce Park, Pune - 411001', gstNumber: '27BBBCD5678G2ZI', panNumber: 'BBBCD5678G', createdAt: new Date('2024-03-20') },
 ];
 
 // === BRANCHES ===

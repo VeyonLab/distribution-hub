@@ -1,4 +1,4 @@
-import { Building2, Users, GitBranch, ArrowLeftRight, LayoutDashboard, FileText, Truck, Activity, Package, Store } from 'lucide-react';
+import { Building2, Users, GitBranch, ArrowLeftRight, LayoutDashboard, FileText, Truck, Activity, Package, Store, Settings } from 'lucide-react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -10,7 +10,7 @@ const ownerNavItems: NavItem[] = [
   { to: '/owner/branches', label: 'Branches', icon: GitBranch },
   { to: '/owner/requests', label: 'Requests', icon: FileText },
   { to: '/owner/monitoring', label: 'Monitor', icon: Activity },
-  { to: '/owner/transfers', label: 'Transfers', icon: ArrowLeftRight },
+  { to: '/owner/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function TenantOwnerLayout() {
@@ -26,6 +26,7 @@ export default function TenantOwnerLayout() {
     if (location.pathname === '/owner/monitoring') return 'Delivery Monitoring';
     if (location.pathname === '/owner/products') return 'All Products';
     if (location.pathname === '/owner/vendors') return 'All Vendors';
+    if (location.pathname === '/owner/settings') return 'Business Settings';
     return 'Distributor Dashboard';
   };
 
