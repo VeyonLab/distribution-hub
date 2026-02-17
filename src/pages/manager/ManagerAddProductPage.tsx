@@ -8,11 +8,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { useToast } from '@/hooks/use-toast';
 
 export default function ManagerAddProductPage() {
   const { tenant } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const { toast } = useToast();
 
   const [name, setName] = useState('');
@@ -53,7 +55,7 @@ export default function ManagerAddProductPage() {
     });
 
     setIsLoading(false);
-    navigate('/manager/products');
+    navigate(`${basePath}/products`);
   };
 
   if (!tenant) return null;

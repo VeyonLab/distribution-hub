@@ -9,11 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { MapPlaceholder } from '@/components/MapPlaceholder';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { useToast } from '@/hooks/use-toast';
 
 export default function ManagerAddVendorPage() {
   const { tenant } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const { toast } = useToast();
 
   const [name, setName] = useState('');
@@ -58,7 +60,7 @@ export default function ManagerAddVendorPage() {
     });
 
     setIsLoading(false);
-    navigate('/manager/vendors');
+    navigate(`${basePath}/vendors`);
   };
 
   if (!tenant) return null;

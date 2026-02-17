@@ -9,12 +9,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { useToast } from '@/hooks/use-toast';
 import { getVendorsByBranch, getVendorById } from '@/data/mockData';
 
 export default function ManagerCreateRoutePage() {
   const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const { toast } = useToast();
 
   const [name, setName] = useState('');
@@ -95,7 +97,7 @@ export default function ManagerCreateRoutePage() {
     });
 
     setIsLoading(false);
-    navigate('/manager/routes');
+    navigate(`${basePath}/routes`);
   };
 
   return (

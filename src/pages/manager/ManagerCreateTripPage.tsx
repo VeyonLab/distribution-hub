@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { useToast } from '@/hooks/use-toast';
 import { 
   getRoutesByBranch,
@@ -21,6 +22,7 @@ import {
 export default function ManagerCreateTripPage() {
   const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const { toast } = useToast();
 
   const [selectedRouteId, setSelectedRouteId] = useState<string>('');
@@ -120,7 +122,7 @@ export default function ManagerCreateTripPage() {
     
     toast({ title: 'Draft Saved', description: 'Trip saved as draft. (UI demo only)' });
     setIsLoading(false);
-    navigate('/manager/trips');
+    navigate(`${basePath}/trips`);
   };
 
   const handleCreateTrip = async () => {
@@ -142,7 +144,7 @@ export default function ManagerCreateTripPage() {
     
     toast({ title: 'Trip Created', description: 'Trip has been scheduled and assigned. (UI demo only)' });
     setIsLoading(false);
-    navigate('/manager/trips');
+    navigate(`${basePath}/trips`);
   };
 
   return (

@@ -4,6 +4,7 @@ import { MobileLayout } from '@/components/layout/MobileLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { BottomNav, NavItem } from '@/components/layout/BottomNav';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { Button } from '@/components/ui/button';
 
 const managerNavItems: NavItem[] = [

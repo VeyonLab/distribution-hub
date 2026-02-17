@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getUserById } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { UserRole } from '@/types';
 
 const roleLabels: Record<UserRole, string> = {
@@ -20,6 +21,7 @@ export default function ManagerTeamMemberPage() {
   const { userId } = useParams<{ userId: string }>();
   const { tenant } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
 
   const user = userId ? getUserById(userId) : null;
 
@@ -31,7 +33,7 @@ export default function ManagerTeamMemberPage() {
         <div className="flex flex-col items-center justify-center p-8 text-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
           <User className="mb-4 h-16 w-16 text-muted-foreground/50" />
           <p className="font-medium">User not found</p>
-          <Button variant="outline" className="mt-4" onClick={() => navigate('/manager/team')}>
+          <Button variant="outline" className="mt-4" onClick={() => navigate(`${basePath}/team`)}>
             Go Back
           </Button>
         </div>

@@ -2,6 +2,7 @@ import { FileText, Truck, Package, Users, ArrowLeftRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { 
   getVendorRequestsByBranch, 
   getTripsByBranch, 
@@ -12,6 +13,7 @@ import {
 export default function ManagerDashboard() {
   const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
 
   if (!tenant || !branch) return null;
 
@@ -31,21 +33,21 @@ export default function ManagerDashboard() {
       value: pendingRequests, 
       icon: FileText, 
       color: 'bg-amber-500',
-      onClick: () => navigate('/manager/requests')
+      onClick: () => navigate(`${basePath}/requests`)
     },
     { 
       label: 'Active Products', 
       value: activeProducts, 
       icon: Package, 
       color: 'bg-blue-500',
-      onClick: () => navigate('/manager/products')
+      onClick: () => navigate(`${basePath}/products`)
     },
     { 
       label: 'Active Trips', 
       value: activeTrips, 
       icon: Truck, 
       color: 'bg-emerald-500',
-      onClick: () => navigate('/manager/trips')
+      onClick: () => navigate(`${basePath}/trips`)
     },
     { 
       label: 'Total Vendors', 
@@ -84,7 +86,7 @@ export default function ManagerDashboard() {
         <div className="space-y-3">
           <Card 
             className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-            onClick={() => navigate('/manager/requests')}
+            onClick={() => navigate(`${basePath}/requests`)}
           >
             <CardContent className="flex items-center gap-4 p-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10">
@@ -101,7 +103,7 @@ export default function ManagerDashboard() {
 
           <Card 
             className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-            onClick={() => navigate('/manager/trips')}
+            onClick={() => navigate(`${basePath}/trips`)}
           >
             <CardContent className="flex items-center gap-4 p-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10">
@@ -118,7 +120,7 @@ export default function ManagerDashboard() {
 
           <Card 
             className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-            onClick={() => navigate('/manager/transfers')}
+            onClick={() => navigate(`${basePath}/transfers`)}
           >
             <CardContent className="flex items-center gap-4 p-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10">

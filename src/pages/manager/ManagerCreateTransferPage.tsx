@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { useToast } from '@/hooks/use-toast';
 import { getBranchesByTenant, getProductsByBranch, getBranchById } from '@/data/mockData';
 
@@ -22,6 +23,7 @@ interface TransferItem {
 export default function ManagerCreateTransferPage() {
   const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const { toast } = useToast();
 
   const [toBranchId, setToBranchId] = useState<string>('');
@@ -72,7 +74,7 @@ export default function ManagerCreateTransferPage() {
       description: `Request sent to ${toBranch?.name} for ${items.length} item(s).` 
     });
     setIsLoading(false);
-    navigate('/manager');
+    navigate(`${basePath}`);
   };
 
   return (

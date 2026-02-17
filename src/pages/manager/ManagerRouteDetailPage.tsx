@@ -6,6 +6,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { useToast } from '@/hooks/use-toast';
 import { getRouteById, getVendorById } from '@/data/mockData';
 
@@ -13,6 +14,7 @@ export default function ManagerRouteDetailPage() {
   const { routeId } = useParams<{ routeId: string }>();
   const { tenant } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const { toast } = useToast();
 
   const route = routeId ? getRouteById(routeId) : null;
@@ -29,7 +31,7 @@ export default function ManagerRouteDetailPage() {
         <div className="flex flex-col items-center justify-center p-8 text-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
           <RouteIcon className="mb-4 h-16 w-16 text-muted-foreground/50" />
           <p className="font-medium">Route not found</p>
-          <Button variant="outline" className="mt-4" onClick={() => navigate('/manager/routes')}>
+          <Button variant="outline" className="mt-4" onClick={() => navigate(`${basePath}/routes`)}>
             Go Back
           </Button>
         </div>

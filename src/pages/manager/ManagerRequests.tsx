@@ -6,6 +6,7 @@ import { StatusBadge } from '@/components/ui/status-badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { 
   getVendorRequestsByBranch, 
   getVendorById, 
@@ -17,6 +18,7 @@ import {
 export default function ManagerRequests() {
   const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   
   const [dateFilter, setDateFilter] = useState<string>('today');
   const [salesmanFilter, setSalesmanFilter] = useState<string>('all');
@@ -71,7 +73,7 @@ export default function ManagerRequests() {
         <Button 
           variant="outline" 
           size="sm"
-          onClick={() => navigate('/manager/requests/consolidated')}
+          onClick={() => navigate(`${basePath}/requests/consolidated`)}
         >
           View Consolidated
         </Button>
@@ -124,7 +126,7 @@ export default function ManagerRequests() {
             <Card 
               key={request.id}
               className="cursor-pointer transition-all hover:border-accent active:scale-[0.99]"
-              onClick={() => navigate(`/manager/requests/${request.id}`)}
+              onClick={() => navigate(`${basePath}/requests/${request.id}`)}
             >
               <CardContent className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3 min-w-0">

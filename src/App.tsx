@@ -155,21 +155,36 @@ function AppRoutes() {
         }
       >
         <Route index element={<TenantOwnerDashboard />} />
+        {/* Branch-scoped operations (same as manager, for home branch) */}
+        <Route path="requests" element={<ManagerRequests />} />
+        <Route path="requests/consolidated" element={<ManagerConsolidatedPage />} />
+        <Route path="requests/:requestId" element={<ManagerRequestDetailPage />} />
+        <Route path="trips" element={<ManagerTrips />} />
+        <Route path="trips/create" element={<ManagerCreateTripPage />} />
+        <Route path="trips/:tripId" element={<ManagerTripDetailPage />} />
+        <Route path="monitoring" element={<ManagerDeliveryMonitoringPage />} />
+        <Route path="monitoring/:tripId" element={<ManagerTripMonitoringDetailPage />} />
+        <Route path="products" element={<ManagerProductsPage />} />
+        <Route path="products/add" element={<ManagerAddProductPage />} />
+        <Route path="products/:productId" element={<ManagerEditProductPage />} />
+        <Route path="vendors" element={<ManagerVendorsPage />} />
+        <Route path="vendors/add" element={<ManagerAddVendorPage />} />
+        <Route path="vendors/:vendorId" element={<ManagerVendorDetailPage />} />
+        <Route path="vendors/:vendorId/edit" element={<ManagerEditVendorPage />} />
+        <Route path="routes" element={<ManagerRoutesPage />} />
+        <Route path="routes/create" element={<ManagerCreateRoutePage />} />
+        <Route path="routes/:routeId" element={<ManagerRouteDetailPage />} />
+        <Route path="routes/:routeId/edit" element={<ManagerEditRoutePage />} />
+        <Route path="team" element={<ManagerTeamPage />} />
+        <Route path="team/invite" element={<ManagerInviteUserPage />} />
+        <Route path="team/:userId" element={<ManagerTeamMemberPage />} />
+        <Route path="transfers" element={<ManagerTransfersPage />} />
+        <Route path="transfers/create" element={<ManagerCreateTransferPage />} />
         {/* Admin features */}
         <Route path="branches" element={<OwnerBranchesPage />} />
         <Route path="branches/add" element={<OwnerAddBranchPage />} />
         <Route path="branches/:branchId" element={<OwnerBranchDetailPage />} />
         <Route path="branches/:branchId/edit" element={<OwnerEditBranchPage />} />
-        <Route path="team" element={<OwnerTeamPage />} />
-        <Route path="transfers" element={<OwnerTransfersPage />} />
-        {/* Cross-branch views */}
-        <Route path="requests" element={<OwnerRequestsPage />} />
-        <Route path="requests/:requestId" element={<ManagerRequestDetailPage />} />
-        <Route path="trips" element={<OwnerTripsPage />} />
-        <Route path="products" element={<OwnerProductsPage />} />
-        <Route path="vendors" element={<OwnerVendorsPage />} />
-        <Route path="monitoring" element={<OwnerMonitoringPage />} />
-        <Route path="monitoring/:tripId" element={<ManagerTripMonitoringDetailPage />} />
         <Route path="settings" element={<OwnerSettingsPage />} />
       </Route>
 
