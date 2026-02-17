@@ -156,25 +156,28 @@ function AppRoutes() {
         }
       >
         <Route index element={<TenantOwnerDashboard />} />
+        {/* Admin features */}
         <Route path="branches" element={<OwnerBranchesPage />} />
         <Route path="branches/add" element={<OwnerAddBranchPage />} />
         <Route path="branches/:branchId" element={<OwnerBranchDetailPage />} />
         <Route path="branches/:branchId/edit" element={<OwnerEditBranchPage />} />
         <Route path="team" element={<OwnerTeamPage />} />
         <Route path="transfers" element={<OwnerTransfersPage />} />
+        {/* Cross-branch views */}
         <Route path="requests" element={<OwnerRequestsPage />} />
         <Route path="requests/:requestId" element={<ManagerRequestDetailPage />} />
         <Route path="trips" element={<OwnerTripsPage />} />
         <Route path="products" element={<OwnerProductsPage />} />
         <Route path="vendors" element={<OwnerVendorsPage />} />
         <Route path="monitoring" element={<OwnerMonitoringPage />} />
+        <Route path="monitoring/:tripId" element={<ManagerTripMonitoringDetailPage />} />
       </Route>
 
-      {/* Manager Routes */}
+      {/* Manager Routes (also accessible by tenant_owner for their home branch) */}
       <Route 
         path="/manager" 
         element={
-          <ProtectedRoute allowedRoles={['manager']}>
+          <ProtectedRoute allowedRoles={['manager', 'tenant_owner']}>
             <ManagerLayout />
           </ProtectedRoute>
         }
