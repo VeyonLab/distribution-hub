@@ -6,11 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { getProductsByBranch } from '@/data/mockData';
 
 export default function ManagerProductsPage() {
   const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
@@ -35,7 +37,7 @@ export default function ManagerProductsPage() {
         <p className="text-sm text-muted-foreground">
           {products.length} products
         </p>
-        <Button size="sm" className="gap-1" onClick={() => navigate('/manager/products/add')}>
+        <Button size="sm" className="gap-1" onClick={() => navigate(`${basePath}/products/add`)}>
           <Plus className="h-4 w-4" />
           Add
         </Button>
@@ -86,7 +88,7 @@ export default function ManagerProductsPage() {
           <Card 
             key={product.id}
             className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.99]"
-            onClick={() => navigate(`/manager/products/${product.id}`)}
+            onClick={() => navigate(`${basePath}/products/${product.id}`)}
           >
             <CardContent className="flex items-center justify-between p-4">
               <div className="flex items-center gap-3">

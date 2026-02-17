@@ -1,48 +1,71 @@
-import { GitBranch, Users, Package, Truck, ArrowLeftRight, FileText, Activity, Store, Settings } from 'lucide-react';
+import { FileText, Truck, Package, Users, ArrowLeftRight, GitBranch, Store, Settings, Activity, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
-  getBranchesByTenant, 
-  getUsersByTenant, 
-  getVendorRequestsByTenant, 
-  getTripsByTenant,
-  getStockTransfersByTenant,
-  getVendorRequestsByBranch,
-  getTripsByBranch
+  getVendorRequestsByBranch, 
+  getTripsByBranch, 
+  getVendorsByBranch,
+  getProductsByBranch,
+  getBranchesByTenant,
+  getUsersByTenant
 } from '@/data/mockData';
 
 export default function TenantOwnerDashboard() {
   const { tenant, branch } = useAuth();
   const navigate = useNavigate();
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
+  // Branch-scoped data (same as manager)
+  const requests = getVendorRequestsByBranch(branch.id);
+  const trips = getTripsByBranch(branch.id);
+  const vendors = getVendorsByBranch(branch.id);
+  const products = getProductsByBranch(branch.id);
+
+  const pendingRequests = requests.filter(r => r.status === 'pending').length;
+  const todayRequests = requests.length;
+  const activeTrips = trips.filter(t => t.status !== 'completed').length;
+  const activeProducts = products.filter(p => p.status === 'active').length;
+
+  // Admin data
   const tenantBranches = getBranchesByTenant(tenant.id).filter(b => b.status === 'active');
   const tenantUsers = getUsersByTenant(tenant.id).filter(u => u.role !== 'tenant_owner');
-  const tenantRequests = getVendorRequestsByTenant(tenant.id);
-  const tenantTrips = getTripsByTenant(tenant.id);
-  const tenantTransfers = getStockTransfersByTenant(tenant.id);
-
-  const pendingTransfers = tenantTransfers.filter(t => t.status === 'pending').length;
-  const activeTrips = tenantTrips.filter(t => t.status !== 'completed').length;
-  const pendingRequests = tenantRequests.filter(r => r.status === 'pending').length;
-
-  // Home branch stats
-  const myBranchRequests = branch ? getVendorRequestsByBranch(branch.id).filter(r => r.status !== 'draft') : [];
-  const myBranchTrips = branch ? getTripsByBranch(branch.id) : [];
-  const myPendingRequests = myBranchRequests.filter(r => r.status === 'pending').length;
-  const myActiveTrips = myBranchTrips.filter(t => t.status !== 'completed').length;
 
   const stats = [
-    { label: 'Active Branches', value: tenantBranches.length, icon: GitBranch, color: 'bg-blue-500', onClick: () => navigate('/owner/branches') },
-    { label: 'Total Requests', value: tenantRequests.filter(r => r.status !== 'draft').length, icon: FileText, color: 'bg-emerald-500', onClick: () => navigate('/owner/requests') },
-    { label: 'Active Trips', value: activeTrips, icon: Truck, color: 'bg-purple-500', onClick: () => navigate('/owner/trips') },
-    { label: 'Pending Transfers', value: pendingTransfers, icon: ArrowLeftRight, color: 'bg-amber-500', onClick: () => navigate('/owner/transfers') },
+    { 
+      label: 'Pending Requests', 
+      value: pendingRequests, 
+      icon: FileText, 
+      color: 'bg-amber-500',
+      onClick: () => navigate('/owner/requests')
+    },
+    { 
+      label: 'Active Products', 
+      value: activeProducts, 
+      icon: Package, 
+      color: 'bg-blue-500',
+      onClick: () => navigate('/owner/products')
+    },
+    { 
+      label: 'Active Trips', 
+      value: activeTrips, 
+      icon: Truck, 
+      color: 'bg-emerald-500',
+      onClick: () => navigate('/owner/trips')
+    },
+    { 
+      label: 'Total Vendors', 
+      value: vendors.length, 
+      icon: Store, 
+      color: 'bg-purple-500',
+      onClick: () => navigate('/owner/vendors')
+    },
   ];
 
   return (
     <div className="space-y-6 p-4">
+      {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4">
         {stats.map((stat, index) => (
           <Card 
@@ -62,63 +85,9 @@ export default function TenantOwnerDashboard() {
         ))}
       </div>
 
-      {/* My Branch Operations */}
-      {branch && (
-        <div>
-          <h2 className="mb-3 text-lg font-semibold">My Branch — {branch.name}</h2>
-          <Card 
-            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-            onClick={() => navigate('/manager')}
-          >
-            <CardContent className="flex items-center gap-4 p-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                <Settings className="h-6 w-6 text-primary" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium">Manage Branch Operations</p>
-                <p className="text-sm text-muted-foreground">
-                  {myPendingRequests} pending requests • {myActiveTrips} active trips
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-          <div className="mt-2 grid grid-cols-3 gap-2">
-            <Card 
-              className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-              onClick={() => navigate('/manager/requests')}
-            >
-              <CardContent className="flex flex-col items-center gap-1 p-3">
-                <FileText className="h-5 w-5 text-accent" />
-                <span className="text-xs font-medium">Requests</span>
-                <span className="text-xs text-muted-foreground">{myPendingRequests} pending</span>
-              </CardContent>
-            </Card>
-            <Card 
-              className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-              onClick={() => navigate('/manager/trips')}
-            >
-              <CardContent className="flex flex-col items-center gap-1 p-3">
-                <Truck className="h-5 w-5 text-accent" />
-                <span className="text-xs font-medium">Trips</span>
-                <span className="text-xs text-muted-foreground">{myActiveTrips} active</span>
-              </CardContent>
-            </Card>
-            <Card 
-              className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-              onClick={() => navigate('/manager/products')}
-            >
-              <CardContent className="flex flex-col items-center gap-1 p-3">
-                <Package className="h-5 w-5 text-accent" />
-                <span className="text-xs font-medium">Products</span>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      )}
-
-      {/* Admin Quick Actions */}
+      {/* Quick Actions */}
       <div>
-        <h2 className="mb-3 text-lg font-semibold">Admin Overview</h2>
+        <h2 className="mb-3 text-lg font-semibold">Quick Actions</h2>
         <div className="space-y-3">
           <Card 
             className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
@@ -129,9 +98,9 @@ export default function TenantOwnerDashboard() {
                 <FileText className="h-6 w-6 text-accent" />
               </div>
               <div>
-                <p className="font-medium">All Requests (Cross-Branch)</p>
+                <p className="font-medium">Review Requests</p>
                 <p className="text-sm text-muted-foreground">
-                  {pendingRequests} pending across branches
+                  {pendingRequests} pending for batching
                 </p>
               </div>
             </CardContent>
@@ -139,76 +108,111 @@ export default function TenantOwnerDashboard() {
 
           <Card 
             className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-            onClick={() => navigate('/owner/monitoring')}
+            onClick={() => navigate('/owner/trips')}
           >
             <CardContent className="flex items-center gap-4 p-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10">
-                <Activity className="h-6 w-6 text-accent" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10">
+                <Truck className="h-6 w-6 text-emerald-600" />
               </div>
               <div>
-                <p className="font-medium">Delivery Monitoring</p>
+                <p className="font-medium">Manage Trips</p>
                 <p className="text-sm text-muted-foreground">
-                  Track all trips in real-time
+                  Create and assign delivery trips
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-2 gap-3">
-            <Card 
-              className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-              onClick={() => navigate('/owner/products')}
-            >
-              <CardContent className="flex items-center gap-3 p-3">
-                <Package className="h-5 w-5 text-accent" />
-                <span className="text-sm font-medium">Products</span>
-              </CardContent>
-            </Card>
-            <Card 
-              className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-              onClick={() => navigate('/owner/vendors')}
-            >
-              <CardContent className="flex items-center gap-3 p-3">
-                <Store className="h-5 w-5 text-accent" />
-                <span className="text-sm font-medium">Vendors</span>
-              </CardContent>
-            </Card>
-            <Card 
-              className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-              onClick={() => navigate('/owner/team')}
-            >
-              <CardContent className="flex items-center gap-3 p-3">
-                <Users className="h-5 w-5 text-accent" />
-                <span className="text-sm font-medium">Team</span>
-              </CardContent>
-            </Card>
-            <Card 
-              className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-              onClick={() => navigate('/owner/branches')}
-            >
-              <CardContent className="flex items-center gap-3 p-3">
-                <GitBranch className="h-5 w-5 text-accent" />
-                <span className="text-sm font-medium">Branches</span>
-              </CardContent>
-            </Card>
-          </div>
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate('/owner/transfers')}
+          >
+            <CardContent className="flex items-center gap-4 p-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10">
+                <ArrowLeftRight className="h-6 w-6 text-accent" />
+              </div>
+              <div>
+                <p className="font-medium">Stock Transfers</p>
+                <p className="text-sm text-muted-foreground">
+                  Request stock from other branches
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
-      {/* Branch Summary */}
+      {/* More Options */}
+      <div>
+        <h2 className="mb-3 text-lg font-semibold">Manage</h2>
+        <div className="grid grid-cols-2 gap-3">
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate('/owner/products')}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <Package className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Products</span>
+            </CardContent>
+          </Card>
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate('/owner/vendors')}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <Store className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Vendors</span>
+            </CardContent>
+          </Card>
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate('/owner/routes')}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <Activity className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Routes</span>
+            </CardContent>
+          </Card>
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate('/owner/team')}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <Users className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Team</span>
+            </CardContent>
+          </Card>
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate('/owner/settings')}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <Settings className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Settings</span>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Today's Summary */}
       <Card>
         <CardContent className="p-4">
-          <h3 className="mb-2 font-medium">Branch Overview</h3>
+          <h3 className="mb-2 font-medium">Today's Summary</h3>
           <div className="space-y-2 text-sm">
-            {tenantBranches.map(b => {
-              const branchUsers = tenantUsers.filter(u => u.branchId === b.id);
-              return (
-                <div key={b.id} className="flex justify-between">
-                  <span className="text-muted-foreground">{b.name}</span>
-                  <span className="font-medium">{branchUsers.length} members</span>
-                </div>
-              );
-            })}
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Total Vendors</span>
+              <span className="font-medium">{vendors.length}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Requests Created</span>
+              <span className="font-medium">{todayRequests}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Deliveries Completed</span>
+              <span className="font-medium">
+                {trips.filter(t => t.status === 'completed').length}
+              </span>
+            </div>
           </div>
         </CardContent>
       </Card>

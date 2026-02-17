@@ -4,6 +4,7 @@ import { Users, ChevronRight, UserPlus } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { getUsersByBranch } from '@/data/mockData';
 import { UserRole } from '@/types';
 
@@ -18,6 +19,7 @@ const roleLabels: Record<UserRole, string> = {
 export default function ManagerTeamPage() {
   const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
 
   if (!tenant || !branch) return null;
 
@@ -32,7 +34,7 @@ export default function ManagerTeamPage() {
         <p className="text-sm text-muted-foreground">
           {teamMembers.length} team members
         </p>
-        <Button size="sm" className="gap-1" onClick={() => navigate('/manager/team/invite')}>
+        <Button size="sm" className="gap-1" onClick={() => navigate(`${basePath}/team/invite`)}>
           <UserPlus className="h-4 w-4" />
           Invite
         </Button>
@@ -60,7 +62,7 @@ export default function ManagerTeamPage() {
           <Card 
             key={user.id}
             className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.99]"
-            onClick={() => navigate(`/manager/team/${user.id}`)}
+            onClick={() => navigate(`${basePath}/team/${user.id}`)}
           >
             <CardContent className="flex items-center justify-between p-4">
               <div className="flex items-center gap-3">

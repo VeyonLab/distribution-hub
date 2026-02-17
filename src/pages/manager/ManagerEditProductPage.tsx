@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { useToast } from '@/hooks/use-toast';
 import { getProductById } from '@/data/mockData';
 
@@ -15,6 +16,7 @@ export default function ManagerEditProductPage() {
   const { productId } = useParams<{ productId: string }>();
   const { tenant } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const { toast } = useToast();
 
   const product = productId ? getProductById(productId) : null;
@@ -33,7 +35,7 @@ export default function ManagerEditProductPage() {
         <div className="flex flex-col items-center justify-center p-8 text-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
           <Package className="mb-4 h-16 w-16 text-muted-foreground/50" />
           <p className="font-medium">Product not found</p>
-          <Button variant="outline" className="mt-4" onClick={() => navigate('/manager/products')}>
+          <Button variant="outline" className="mt-4" onClick={() => navigate(`${basePath}/products`)}>
             Go Back
           </Button>
         </div>
@@ -74,7 +76,7 @@ export default function ManagerEditProductPage() {
     });
 
     setIsLoading(false);
-    navigate('/manager/products');
+    navigate(`${basePath}/products`);
   };
 
   const handleToggleStatus = () => {

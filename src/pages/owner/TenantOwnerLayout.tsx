@@ -1,4 +1,4 @@
-import { Building2, Users, GitBranch, ArrowLeftRight, LayoutDashboard, FileText, Truck, Activity, Package, Store, Settings } from 'lucide-react';
+import { GitBranch, ArrowLeftRight, LayoutDashboard, FileText, Truck, Activity, Settings } from 'lucide-react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -7,34 +7,41 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const ownerNavItems: NavItem[] = [
   { to: '/owner', label: 'Home', icon: LayoutDashboard },
-  { to: '/owner/branches', label: 'Branches', icon: GitBranch },
   { to: '/owner/requests', label: 'Requests', icon: FileText },
+  { to: '/owner/trips', label: 'Trips', icon: Truck },
   { to: '/owner/monitoring', label: 'Monitor', icon: Activity },
-  { to: '/owner/settings', label: 'Settings', icon: Settings },
+  { to: '/owner/branches', label: 'Branches', icon: GitBranch },
 ];
 
 export default function TenantOwnerLayout() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const location = useLocation();
 
   const getPageTitle = () => {
-    if (location.pathname === '/owner/branches') return 'Branches';
-    if (location.pathname === '/owner/team') return 'All Team Members';
+    if (location.pathname === '/owner/branches') return 'All Branches';
+    if (location.pathname === '/owner/team') return 'Branch Team';
     if (location.pathname === '/owner/transfers') return 'Stock Transfers';
-    if (location.pathname === '/owner/requests') return 'All Requests';
-    if (location.pathname === '/owner/trips') return 'All Trips';
+    if (location.pathname === '/owner/requests') return 'Requests Inbox';
+    if (location.pathname === '/owner/trips') return 'Manage Trips';
     if (location.pathname === '/owner/monitoring') return 'Delivery Monitoring';
-    if (location.pathname === '/owner/products') return 'All Products';
-    if (location.pathname === '/owner/vendors') return 'All Vendors';
+    if (location.pathname === '/owner/products') return 'Products';
+    if (location.pathname === '/owner/vendors') return 'Vendors';
+    if (location.pathname === '/owner/routes') return 'Routes';
     if (location.pathname === '/owner/settings') return 'Business Settings';
-    return 'Distributor Dashboard';
+    return 'Dashboard';
   };
 
   // Don't show bottom nav for detail/sub pages
   if (
     location.pathname.match(/\/branches\/[^/]+/) || 
     location.pathname.match(/\/team\/[^/]+/) ||
-    location.pathname.match(/\/requests\/[^/]+/)
+    location.pathname.match(/\/requests\/[^/]+/) ||
+    location.pathname.match(/\/trips\/[^/]+/) ||
+    location.pathname.match(/\/monitoring\/[^/]+/) ||
+    location.pathname.match(/\/vendors\/[^/]+/) ||
+    location.pathname.match(/\/products\/[^/]+/) ||
+    location.pathname.match(/\/routes\/[^/]+/) ||
+    location.pathname === '/owner/settings'
   ) {
     return <Outlet />;
   }
@@ -44,7 +51,7 @@ export default function TenantOwnerLayout() {
       header={
         <PageHeader 
           title={getPageTitle()} 
-          subtitle={tenant?.name || ''} 
+          subtitle={branch ? `${tenant?.name} • ${branch.name}` : tenant?.name || ''} 
           showLogout 
         />
       }

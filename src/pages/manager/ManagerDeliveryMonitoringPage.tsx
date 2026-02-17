@@ -4,12 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { getTripsByBranch, getRouteById, getUserById, getVendorById } from '@/data/mockData';
 import { useDriverDeliveryState } from '@/hooks/useDriverDeliveryState';
 
 export default function ManagerDeliveryMonitoringPage() {
   const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const { getStopStatus } = useDriverDeliveryState();
 
   if (!tenant || !branch) return null;
@@ -97,7 +99,7 @@ export default function ManagerDeliveryMonitoringPage() {
               <Card 
                 key={trip.id} 
                 className="cursor-pointer transition-all hover:border-accent active:scale-[0.99]"
-                onClick={() => navigate(`/manager/monitoring/${trip.id}`)}
+                onClick={() => navigate(`${basePath}/monitoring/${trip.id}`)}
               >
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-3">

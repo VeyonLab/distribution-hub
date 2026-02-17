@@ -4,11 +4,13 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { getStockTransfersByBranch, getBranchById } from '@/data/mockData';
 
 export default function ManagerTransfersPage() {
   const { branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
 
   if (!branch) return null;
 
@@ -20,7 +22,7 @@ export default function ManagerTransfersPage() {
         <p className="text-sm text-muted-foreground">
           {transfers.length} transfer{transfers.length !== 1 ? 's' : ''}
         </p>
-        <Button size="sm" onClick={() => navigate('/manager/transfers/create')}>
+        <Button size="sm" onClick={() => navigate(`${basePath}/transfers/create`)}>
           <Plus className="mr-1 h-4 w-4" />
           New Request
         </Button>
@@ -31,7 +33,7 @@ export default function ManagerTransfersPage() {
           <ArrowLeftRight className="mb-4 h-16 w-16 text-muted-foreground/30" />
           <p className="font-medium text-muted-foreground">No stock transfers</p>
           <p className="text-sm text-muted-foreground">Request stock from another branch when you're running low</p>
-          <Button className="mt-4" onClick={() => navigate('/manager/transfers/create')}>
+          <Button className="mt-4" onClick={() => navigate(`${basePath}/transfers/create`)}>
             Request Stock
           </Button>
         </div>

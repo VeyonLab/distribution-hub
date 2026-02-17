@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { trips, getRouteById, getUserById, getVendorById } from '@/data/mockData';
 import { useDriverDeliveryState } from '@/hooks/useDriverDeliveryState';
 
@@ -14,6 +15,7 @@ export default function ManagerTripMonitoringDetailPage() {
   const { tripId } = useParams<{ tripId: string }>();
   const { tenant } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const { getStopStatus, getDeliveryNote } = useDriverDeliveryState();
 
   const trip = trips.find(t => t.id === tripId);
@@ -28,7 +30,7 @@ export default function ManagerTripMonitoringDetailPage() {
         <div className="flex flex-col items-center justify-center p-8 text-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
           <Truck className="mb-4 h-16 w-16 text-muted-foreground/50" />
           <p className="font-medium">Trip not found</p>
-          <Button variant="outline" className="mt-4" onClick={() => navigate('/manager/monitoring')}>
+          <Button variant="outline" className="mt-4" onClick={() => navigate(`${basePath}/monitoring`)}>
             Go Back
           </Button>
         </div>

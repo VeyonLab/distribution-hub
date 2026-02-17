@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { MapPlaceholder } from '@/components/MapPlaceholder';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { useToast } from '@/hooks/use-toast';
 import { getVendorById } from '@/data/mockData';
 
@@ -16,6 +17,7 @@ export default function ManagerEditVendorPage() {
   const { vendorId } = useParams<{ vendorId: string }>();
   const { tenant } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const { toast } = useToast();
 
   const vendor = vendorId ? getVendorById(vendorId) : null;
@@ -35,7 +37,7 @@ export default function ManagerEditVendorPage() {
         <div className="flex flex-col items-center justify-center p-8 text-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
           <Store className="mb-4 h-16 w-16 text-muted-foreground/50" />
           <p className="font-medium">Vendor not found</p>
-          <Button variant="outline" className="mt-4" onClick={() => navigate('/manager/vendors')}>
+          <Button variant="outline" className="mt-4" onClick={() => navigate(`${basePath}/vendors`)}>
             Go Back
           </Button>
         </div>

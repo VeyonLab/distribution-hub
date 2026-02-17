@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { 
   trips,
   getRouteById, 
@@ -19,6 +20,7 @@ export default function ManagerTripDetailPage() {
   const { tripId } = useParams<{ tripId: string }>();
   const { tenant } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
 
   const trip = trips.find(t => t.id === tripId);
   const route = trip ? getRouteById(trip.routeId) : null;
@@ -32,7 +34,7 @@ export default function ManagerTripDetailPage() {
         <div className="flex flex-col items-center justify-center p-8 text-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
           <Truck className="mb-4 h-16 w-16 text-muted-foreground/50" />
           <p className="font-medium">Trip not found</p>
-          <Button variant="outline" className="mt-4" onClick={() => navigate('/manager/trips')}>
+          <Button variant="outline" className="mt-4" onClick={() => navigate(`${basePath}/trips`)}>
             Go Back
           </Button>
         </div>
