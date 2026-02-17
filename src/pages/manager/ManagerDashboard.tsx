@@ -1,4 +1,4 @@
-import { FileText, Truck, Package, Users, ArrowLeftRight } from 'lucide-react';
+import { FileText, Truck, Package, Users, ArrowLeftRight, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
@@ -132,6 +132,49 @@ export default function ManagerDashboard() {
                   Request stock from other branches
                 </p>
               </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Manage Section */}
+      <div>
+        <h2 className="mb-3 text-lg font-semibold">Manage</h2>
+        <div className="grid grid-cols-2 gap-3">
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate(`${basePath}/products`)}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <Package className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Products</span>
+            </CardContent>
+          </Card>
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate(`${basePath}/vendors`)}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <Users className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Vendors</span>
+            </CardContent>
+          </Card>
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate(`${basePath}/routes`)}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <MapPin className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Routes</span>
+            </CardContent>
+          </Card>
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate(`${basePath}/team`)}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <Users className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Team</span>
             </CardContent>
           </Card>
         </div>
