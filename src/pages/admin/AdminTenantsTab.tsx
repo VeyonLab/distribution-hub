@@ -1,17 +1,15 @@
 import { Building2, Users, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { tenants, users, getUsersByTenant } from '@/data/mockData';
+import { tenants, getUsersByTenant } from '@/data/mockData';
 
 export default function AdminTenantsTab() {
   const navigate = useNavigate();
   
   const totalTenants = tenants.length;
-  const totalUsers = users.filter(u => u.role !== 'super_admin').length;
 
   const stats = [
     { label: 'Total Distributors', value: totalTenants, icon: Building2, color: 'bg-blue-500' },
-    { label: 'Total Users', value: totalUsers, icon: Users, color: 'bg-emerald-500' },
   ];
 
   return (
