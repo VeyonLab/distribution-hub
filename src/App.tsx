@@ -52,6 +52,11 @@ import SalesmanVendorDetailPage from "@/pages/salesman/SalesmanVendorDetailPage"
 import SalesmanCreateRequestPage from "@/pages/salesman/SalesmanCreateRequestPage";
 import SalesmanRequestsPage from "@/pages/salesman/SalesmanRequestsPage";
 import SalesmanRequestDetailPage from "@/pages/salesman/SalesmanRequestDetailPage";
+import SalesmanCheckInPage from "@/pages/salesman/SalesmanCheckInPage";
+import SalesmanVisitModePage from "@/pages/salesman/SalesmanVisitModePage";
+import SalesmanFinancialClosurePage from "@/pages/salesman/SalesmanFinancialClosurePage";
+import SalesmanInvoicePage from "@/pages/salesman/SalesmanInvoicePage";
+import SalesmanPerformancePage from "@/pages/salesman/SalesmanPerformancePage";
 
 // Driver Pages
 import DriverLayout from "@/pages/driver/DriverLayout";
@@ -234,11 +239,16 @@ function AppRoutes() {
         }
       >
         <Route index element={<SalesmanDashboard />} />
+        <Route path="check-in" element={<SalesmanCheckInPage />} />
         <Route path="vendors" element={<SalesmanVendorsPage />} />
         <Route path="vendors/:vendorId" element={<SalesmanVendorDetailPage />} />
+        <Route path="visit/:vendorId/:mode" element={<SalesmanVisitModePage />} />
         <Route path="create/:vendorId" element={<SalesmanCreateRequestPage />} />
+        <Route path="closure/:vendorId" element={<SalesmanFinancialClosurePage />} />
+        <Route path="invoice/:vendorId" element={<SalesmanInvoicePage />} />
         <Route path="requests" element={<SalesmanRequestsPage />} />
         <Route path="requests/:requestId" element={<SalesmanRequestDetailPage />} />
+        <Route path="performance" element={<SalesmanPerformancePage />} />
       </Route>
 
       {/* Driver Routes */}
