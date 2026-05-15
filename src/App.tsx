@@ -63,6 +63,11 @@ import DriverLayout from "@/pages/driver/DriverLayout";
 import DriverDashboard from "@/pages/driver/DriverDashboard";
 import DriverRoute from "@/pages/driver/DriverRoute";
 import DriverStopDetailPage from "@/pages/driver/DriverStopDetailPage";
+import DriverLoadingPage from "@/pages/driver/DriverLoadingPage";
+import DriverGatePassPage from "@/pages/driver/DriverGatePassPage";
+import DriverStockOnWheelsPage from "@/pages/driver/DriverStockOnWheelsPage";
+import DriverIncidentPage from "@/pages/driver/DriverIncidentPage";
+import DriverEODPage from "@/pages/driver/DriverEODPage";
 
 // Tenant Owner Pages
 import TenantOwnerLayout from "@/pages/owner/TenantOwnerLayout";
@@ -262,6 +267,11 @@ function AppRoutes() {
       >
         <Route index element={<DriverDashboard />} />
         <Route path="route" element={<DriverRoute />} />
+        <Route path="loading" element={<DriverLoadingPage />} />
+        <Route path="gate-pass" element={<DriverGatePassPage />} />
+        <Route path="stock" element={<DriverStockOnWheelsPage />} />
+        <Route path="incident" element={<DriverIncidentPage />} />
+        <Route path="eod" element={<DriverEODPage />} />
         <Route path="stop/:stopId" element={<DriverStopDetailPage />} />
       </Route>
 

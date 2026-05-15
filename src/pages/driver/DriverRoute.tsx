@@ -6,11 +6,13 @@ import { StatusBadge } from '@/components/ui/status-badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { getTripsByDriver, getRouteById, getVendorById } from '@/data/mockData';
 import { useDriverDeliveryState } from '@/hooks/useDriverDeliveryState';
+import { useDriverDay } from '@/contexts/DriverContext';
 
 export default function DriverRoute() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { getStopStatus } = useDriverDeliveryState();
+  const { deliveries } = useDriverDay();
 
   if (!user) return null;
 
@@ -75,7 +77,7 @@ export default function DriverRoute() {
         {todayTrip.stops.map((stop, index) => {
           const vendor = getVendorById(stop.vendorId);
           const status = getStopStatus(stop.id);
-          const isDelivered = status === 'delivered' || status === 'partial';
+          const isDelivered = status === 'delivered' || status === 'partial' || !!deliveries[stop.id];
 
           return (
             <Card 
