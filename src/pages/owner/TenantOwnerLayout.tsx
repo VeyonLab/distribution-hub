@@ -42,7 +42,12 @@ export default function TenantOwnerLayout() {
     location.pathname.match(/\/vendors\/[^/]+/) ||
     location.pathname.match(/\/products\/[^/]+/) ||
     location.pathname.match(/\/routes\/[^/]+/) ||
-    location.pathname === '/owner/settings'
+    location.pathname === '/owner/settings' ||
+    location.pathname === '/owner/aging-stock' ||
+    location.pathname === '/owner/reconciliation' ||
+    location.pathname === '/owner/credit' ||
+    location.pathname === '/owner/scorecard' ||
+    location.pathname === '/owner/morning'
   ) {
     return <Outlet />;
   }
