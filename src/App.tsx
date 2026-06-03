@@ -84,6 +84,12 @@ import OwnerProductsPage from "@/pages/owner/OwnerProductsPage";
 import OwnerVendorsPage from "@/pages/owner/OwnerVendorsPage";
 import OwnerMonitoringPage from "@/pages/owner/OwnerMonitoringPage";
 import OwnerSettingsPage from "@/pages/owner/OwnerSettingsPage";
+import OwnerPulsePage from "@/pages/owner/OwnerPulsePage";
+import OwnerAgingStockPage from "@/pages/owner/OwnerAgingStockPage";
+import OwnerReconciliationPage from "@/pages/owner/OwnerReconciliationPage";
+import OwnerCreditLimitPage from "@/pages/owner/OwnerCreditLimitPage";
+import OwnerScorecardPage from "@/pages/owner/OwnerScorecardPage";
+import OwnerMorningChecklistPage from "@/pages/owner/OwnerMorningChecklistPage";
 
 // Manager extra pages
 import ManagerTransfersPage from "@/pages/manager/ManagerTransfersPage";
