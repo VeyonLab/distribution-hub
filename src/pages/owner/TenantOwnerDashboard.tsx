@@ -1,10 +1,10 @@
-import { FileText, Truck, Package, Users, ArrowLeftRight, GitBranch, Store, Settings, Activity, MapPin } from 'lucide-react';
+import { FileText, Truck, Package, Users, ArrowLeftRight, Store, Settings, Activity, Sun, Radio, Flame, Wallet, ShieldAlert, Trophy } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
-  getVendorRequestsByBranch, 
-  getTripsByBranch, 
+import {
+  getVendorRequestsByBranch,
+  getTripsByBranch,
   getVendorsByBranch,
   getProductsByBranch,
   getBranchesByTenant,
@@ -63,9 +63,42 @@ export default function TenantOwnerDashboard() {
     },
   ];
 
+  const adminTiles = [
+    { label: 'Morning Routine', icon: Sun, color: 'from-amber-400 to-orange-500', route: '/owner/morning', desc: '5-min checklist' },
+    { label: 'Real-Time Pulse', icon: Radio, color: 'from-blue-500 to-cyan-500', route: '/owner/pulse', desc: 'Live vans & tickets' },
+    { label: 'Aging Stock', icon: Flame, color: 'from-red-500 to-pink-500', route: '/owner/aging-stock', desc: 'FIFO heatmap' },
+    { label: 'EOD Reconciliation', icon: Wallet, color: 'from-emerald-500 to-teal-500', route: '/owner/reconciliation', desc: '3-way match' },
+    { label: 'Credit Manager', icon: ShieldAlert, color: 'from-rose-500 to-red-600', route: '/owner/credit', desc: 'Bad payers' },
+    { label: 'KPI Scorecard', icon: Trophy, color: 'from-violet-500 to-purple-600', route: '/owner/scorecard', desc: 'Leaderboard' },
+  ];
+
   return (
     <div className="space-y-6 p-4">
-      {/* Stats Grid */}
+      {/* Admin Panel — coordination */}
+      <div>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Admin Panel</h2>
+          <span className="text-xs text-muted-foreground">Coordination tools</span>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          {adminTiles.map((t, i) => (
+            <Card
+              key={t.label}
+              className="cursor-pointer overflow-hidden border-0 shadow-md transition-all hover:shadow-lg active:scale-[0.98] animate-slide-up"
+              style={{ animationDelay: `${i * 40}ms` }}
+              onClick={() => navigate(t.route)}
+            >
+              <div className={`bg-gradient-to-br ${t.color} p-4 text-white`}>
+                <t.icon className="mb-2 h-6 w-6" />
+                <p className="text-sm font-semibold">{t.label}</p>
+                <p className="text-[11px] opacity-90">{t.desc}</p>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Branch Stats */}
       <div className="grid grid-cols-2 gap-4">
         {stats.map((stat, index) => (
           <Card 

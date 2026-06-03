@@ -1,4 +1,4 @@
-import { GitBranch, ArrowLeftRight, LayoutDashboard, FileText, Truck, Activity, Settings } from 'lucide-react';
+import { GitBranch, LayoutDashboard, Truck, Activity, Radio } from 'lucide-react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const ownerNavItems: NavItem[] = [
   { to: '/owner', label: 'Home', icon: LayoutDashboard },
-  { to: '/owner/requests', label: 'Requests', icon: FileText },
+  { to: '/owner/pulse', label: 'Pulse', icon: Radio },
   { to: '/owner/trips', label: 'Trips', icon: Truck },
   { to: '/owner/monitoring', label: 'Monitor', icon: Activity },
   { to: '/owner/branches', label: 'Branches', icon: GitBranch },
@@ -28,7 +28,8 @@ export default function TenantOwnerLayout() {
     if (location.pathname === '/owner/vendors') return 'Vendors';
     if (location.pathname === '/owner/routes') return 'Routes';
     if (location.pathname === '/owner/settings') return 'Business Settings';
-    return 'Dashboard';
+    if (location.pathname === '/owner/pulse') return 'Real-Time Pulse';
+    return 'Admin Dashboard';
   };
 
   // Don't show bottom nav for detail/sub pages
@@ -41,7 +42,12 @@ export default function TenantOwnerLayout() {
     location.pathname.match(/\/vendors\/[^/]+/) ||
     location.pathname.match(/\/products\/[^/]+/) ||
     location.pathname.match(/\/routes\/[^/]+/) ||
-    location.pathname === '/owner/settings'
+    location.pathname === '/owner/settings' ||
+    location.pathname === '/owner/aging-stock' ||
+    location.pathname === '/owner/reconciliation' ||
+    location.pathname === '/owner/credit' ||
+    location.pathname === '/owner/scorecard' ||
+    location.pathname === '/owner/morning'
   ) {
     return <Outlet />;
   }

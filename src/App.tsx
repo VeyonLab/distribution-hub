@@ -84,6 +84,12 @@ import OwnerProductsPage from "@/pages/owner/OwnerProductsPage";
 import OwnerVendorsPage from "@/pages/owner/OwnerVendorsPage";
 import OwnerMonitoringPage from "@/pages/owner/OwnerMonitoringPage";
 import OwnerSettingsPage from "@/pages/owner/OwnerSettingsPage";
+import OwnerPulsePage from "@/pages/owner/OwnerPulsePage";
+import OwnerAgingStockPage from "@/pages/owner/OwnerAgingStockPage";
+import OwnerReconciliationPage from "@/pages/owner/OwnerReconciliationPage";
+import OwnerCreditLimitPage from "@/pages/owner/OwnerCreditLimitPage";
+import OwnerScorecardPage from "@/pages/owner/OwnerScorecardPage";
+import OwnerMorningChecklistPage from "@/pages/owner/OwnerMorningChecklistPage";
 
 // Manager extra pages
 import ManagerTransfersPage from "@/pages/manager/ManagerTransfersPage";
@@ -196,6 +202,13 @@ function AppRoutes() {
         <Route path="branches/:branchId" element={<OwnerBranchDetailPage />} />
         <Route path="branches/:branchId/edit" element={<OwnerEditBranchPage />} />
         <Route path="settings" element={<OwnerSettingsPage />} />
+        {/* Admin Panel features */}
+        <Route path="pulse" element={<OwnerPulsePage />} />
+        <Route path="aging-stock" element={<OwnerAgingStockPage />} />
+        <Route path="reconciliation" element={<OwnerReconciliationPage />} />
+        <Route path="credit" element={<OwnerCreditLimitPage />} />
+        <Route path="scorecard" element={<OwnerScorecardPage />} />
+        <Route path="morning" element={<OwnerMorningChecklistPage />} />
       </Route>
 
       {/* Manager Routes (also accessible by tenant_owner for their home branch) */}
