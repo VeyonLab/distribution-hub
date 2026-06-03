@@ -28,7 +28,8 @@ export default function TenantOwnerLayout() {
     if (location.pathname === '/owner/vendors') return 'Vendors';
     if (location.pathname === '/owner/routes') return 'Routes';
     if (location.pathname === '/owner/settings') return 'Business Settings';
-    return 'Dashboard';
+    if (location.pathname === '/owner/pulse') return 'Real-Time Pulse';
+    return 'Admin Dashboard';
   };
 
   // Don't show bottom nav for detail/sub pages
