@@ -202,6 +202,13 @@ function AppRoutes() {
         <Route path="branches/:branchId" element={<OwnerBranchDetailPage />} />
         <Route path="branches/:branchId/edit" element={<OwnerEditBranchPage />} />
         <Route path="settings" element={<OwnerSettingsPage />} />
+        {/* Admin Panel features */}
+        <Route path="pulse" element={<OwnerPulsePage />} />
+        <Route path="aging-stock" element={<OwnerAgingStockPage />} />
+        <Route path="reconciliation" element={<OwnerReconciliationPage />} />
+        <Route path="credit" element={<OwnerCreditLimitPage />} />
+        <Route path="scorecard" element={<OwnerScorecardPage />} />
+        <Route path="morning" element={<OwnerMorningChecklistPage />} />
       </Route>
 
       {/* Manager Routes (also accessible by tenant_owner for their home branch) */}
