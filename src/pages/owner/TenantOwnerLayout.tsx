@@ -1,4 +1,4 @@
-import { GitBranch, ArrowLeftRight, LayoutDashboard, FileText, Truck, Activity, Settings } from 'lucide-react';
+import { GitBranch, LayoutDashboard, Truck, Activity, Radio } from 'lucide-react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const ownerNavItems: NavItem[] = [
   { to: '/owner', label: 'Home', icon: LayoutDashboard },
-  { to: '/owner/requests', label: 'Requests', icon: FileText },
+  { to: '/owner/pulse', label: 'Pulse', icon: Radio },
   { to: '/owner/trips', label: 'Trips', icon: Truck },
   { to: '/owner/monitoring', label: 'Monitor', icon: Activity },
   { to: '/owner/branches', label: 'Branches', icon: GitBranch },
