@@ -1,10 +1,10 @@
-import { FileText, Truck, Package, Users, ArrowLeftRight, GitBranch, Store, Settings, Activity, MapPin } from 'lucide-react';
+import { FileText, Truck, Package, Users, ArrowLeftRight, Store, Settings, Activity, Sun, Radio, Flame, Wallet, ShieldAlert, Trophy } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
-  getVendorRequestsByBranch, 
-  getTripsByBranch, 
+import {
+  getVendorRequestsByBranch,
+  getTripsByBranch,
   getVendorsByBranch,
   getProductsByBranch,
   getBranchesByTenant,
