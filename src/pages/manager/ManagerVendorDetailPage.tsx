@@ -6,12 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { MapPlaceholder } from '@/components/MapPlaceholder';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { getVendorById } from '@/data/mockData';
 
 export default function ManagerVendorDetailPage() {
   const { vendorId } = useParams<{ vendorId: string }>();
   const { tenant } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
 
   const vendor = vendorId ? getVendorById(vendorId) : null;
 
@@ -23,7 +25,7 @@ export default function ManagerVendorDetailPage() {
         <div className="flex flex-col items-center justify-center p-8 text-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
           <Store className="mb-4 h-16 w-16 text-muted-foreground/50" />
           <p className="font-medium">Vendor not found</p>
-          <Button variant="outline" className="mt-4" onClick={() => navigate('/manager/vendors')}>
+          <Button variant="outline" className="mt-4" onClick={() => navigate(`${basePath}/vendors`)}>
             Go Back
           </Button>
         </div>

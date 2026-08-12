@@ -9,13 +9,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { useToast } from '@/hooks/use-toast';
-import { getRouteById, getVendorsByTenant, getVendorById } from '@/data/mockData';
+import { getRouteById, getVendorsByBranch, getVendorById } from '@/data/mockData';
 
 export default function ManagerEditRoutePage() {
   const { routeId } = useParams<{ routeId: string }>();
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const { toast } = useToast();
 
   const route = routeId ? getRouteById(routeId) : null;
@@ -33,7 +35,7 @@ export default function ManagerEditRoutePage() {
         <div className="flex flex-col items-center justify-center p-8 text-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
           <RouteIcon className="mb-4 h-16 w-16 text-muted-foreground/50" />
           <p className="font-medium">Route not found</p>
-          <Button variant="outline" className="mt-4" onClick={() => navigate('/manager/routes')}>
+          <Button variant="outline" className="mt-4" onClick={() => navigate(`${basePath}/routes`)}>
             Go Back
           </Button>
         </div>
@@ -41,7 +43,7 @@ export default function ManagerEditRoutePage() {
     );
   }
 
-  const allVendors = getVendorsByTenant(tenant?.id || '');
+  const allVendors = branch ? getVendorsByBranch(branch.id) : [];
   const availableVendors = allVendors.filter(v => !selectedVendorIds.includes(v.id));
 
   const toggleVendor = (vendorId: string) => {

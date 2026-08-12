@@ -6,24 +6,27 @@ import { StatusBadge } from '@/components/ui/status-badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { 
-  getVendorRequestsByTenant, 
+  getVendorRequestsByBranch, 
   getVendorById, 
   getUserById,
-  getUsersByTenant
+  getUsersByBranch,
+  getProductById
 } from '@/data/mockData';
 
 export default function ManagerRequests() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   
   const [dateFilter, setDateFilter] = useState<string>('today');
   const [salesmanFilter, setSalesmanFilter] = useState<string>('all');
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const allRequests = getVendorRequestsByTenant(tenant.id);
-  const salesmen = getUsersByTenant(tenant.id).filter(u => u.role === 'salesman');
+  const allRequests = getVendorRequestsByBranch(branch.id);
+  const salesmen = getUsersByBranch(branch.id).filter(u => u.role === 'salesman');
 
   // Filter requests (exclude drafts - only show submitted)
   const filteredRequests = useMemo(() => {
@@ -70,7 +73,7 @@ export default function ManagerRequests() {
         <Button 
           variant="outline" 
           size="sm"
-          onClick={() => navigate('/manager/requests/consolidated')}
+          onClick={() => navigate(`${basePath}/requests/consolidated`)}
         >
           View Consolidated
         </Button>
@@ -114,12 +117,16 @@ export default function ManagerRequests() {
           const vendor = getVendorById(request.vendorId);
           const salesman = getUserById(request.salesmanId);
           const totalItems = request.items.reduce((sum, item) => sum + item.quantity, 0);
+          const totalAmount = request.items.reduce((sum, item) => {
+            const product = getProductById(item.productId);
+            return sum + (product ? product.price * item.quantity : 0);
+          }, 0);
 
           return (
             <Card 
               key={request.id}
               className="cursor-pointer transition-all hover:border-accent active:scale-[0.99]"
-              onClick={() => navigate(`/manager/requests/${request.id}`)}
+              onClick={() => navigate(`${basePath}/requests/${request.id}`)}
             >
               <CardContent className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3 min-w-0">
@@ -130,6 +137,9 @@ export default function ManagerRequests() {
                     <p className="font-medium truncate">{vendor?.name || 'Unknown Vendor'}</p>
                     <p className="text-xs text-muted-foreground truncate">
                       by {salesman?.name || 'Unknown'} • {request.items.length} products • {totalItems} items
+                    </p>
+                    <p className="text-sm font-semibold text-accent">
+                      ₹{totalAmount.toLocaleString('en-IN')}
                     </p>
                   </div>
                 </div>

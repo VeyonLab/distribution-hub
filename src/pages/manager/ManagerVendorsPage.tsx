@@ -5,16 +5,18 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { getVendorsByTenant } from '@/data/mockData';
+import { useBasePath } from '@/hooks/useBasePath';
+import { getVendorsByBranch } from '@/data/mockData';
 
 export default function ManagerVendorsPage() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
   const [searchQuery, setSearchQuery] = useState('');
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const vendors = getVendorsByTenant(tenant.id);
+  const vendors = getVendorsByBranch(branch.id);
 
   const filteredVendors = vendors.filter(vendor => {
     return vendor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -28,7 +30,7 @@ export default function ManagerVendorsPage() {
         <p className="text-sm text-muted-foreground">
           {vendors.length} vendors
         </p>
-        <Button size="sm" className="gap-1" onClick={() => navigate('/manager/vendors/add')}>
+        <Button size="sm" className="gap-1" onClick={() => navigate(`${basePath}/vendors/add`)}>
           <Plus className="h-4 w-4" />
           Add
         </Button>
@@ -51,7 +53,7 @@ export default function ManagerVendorsPage() {
           <Card 
             key={vendor.id}
             className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.99]"
-            onClick={() => navigate(`/manager/vendors/${vendor.id}`)}
+            onClick={() => navigate(`${basePath}/vendors/${vendor.id}`)}
           >
             <CardContent className="flex items-center justify-between p-4">
               <div className="flex items-center gap-3">

@@ -52,12 +52,48 @@ import SalesmanVendorDetailPage from "@/pages/salesman/SalesmanVendorDetailPage"
 import SalesmanCreateRequestPage from "@/pages/salesman/SalesmanCreateRequestPage";
 import SalesmanRequestsPage from "@/pages/salesman/SalesmanRequestsPage";
 import SalesmanRequestDetailPage from "@/pages/salesman/SalesmanRequestDetailPage";
+import SalesmanCheckInPage from "@/pages/salesman/SalesmanCheckInPage";
+import SalesmanVisitModePage from "@/pages/salesman/SalesmanVisitModePage";
+import SalesmanFinancialClosurePage from "@/pages/salesman/SalesmanFinancialClosurePage";
+import SalesmanInvoicePage from "@/pages/salesman/SalesmanInvoicePage";
+import SalesmanPerformancePage from "@/pages/salesman/SalesmanPerformancePage";
 
 // Driver Pages
 import DriverLayout from "@/pages/driver/DriverLayout";
 import DriverDashboard from "@/pages/driver/DriverDashboard";
 import DriverRoute from "@/pages/driver/DriverRoute";
 import DriverStopDetailPage from "@/pages/driver/DriverStopDetailPage";
+import DriverLoadingPage from "@/pages/driver/DriverLoadingPage";
+import DriverGatePassPage from "@/pages/driver/DriverGatePassPage";
+import DriverStockOnWheelsPage from "@/pages/driver/DriverStockOnWheelsPage";
+import DriverIncidentPage from "@/pages/driver/DriverIncidentPage";
+import DriverEODPage from "@/pages/driver/DriverEODPage";
+
+// Tenant Owner Pages
+import TenantOwnerLayout from "@/pages/owner/TenantOwnerLayout";
+import TenantOwnerDashboard from "@/pages/owner/TenantOwnerDashboard";
+import OwnerBranchesPage from "@/pages/owner/OwnerBranchesPage";
+import OwnerBranchDetailPage from "@/pages/owner/OwnerBranchDetailPage";
+import OwnerAddBranchPage from "@/pages/owner/OwnerAddBranchPage";
+import OwnerEditBranchPage from "@/pages/owner/OwnerEditBranchPage";
+import OwnerTeamPage from "@/pages/owner/OwnerTeamPage";
+import OwnerTransfersPage from "@/pages/owner/OwnerTransfersPage";
+import OwnerRequestsPage from "@/pages/owner/OwnerRequestsPage";
+import OwnerTripsPage from "@/pages/owner/OwnerTripsPage";
+import OwnerProductsPage from "@/pages/owner/OwnerProductsPage";
+import OwnerVendorsPage from "@/pages/owner/OwnerVendorsPage";
+import OwnerMonitoringPage from "@/pages/owner/OwnerMonitoringPage";
+import OwnerSettingsPage from "@/pages/owner/OwnerSettingsPage";
+import OwnerPulsePage from "@/pages/owner/OwnerPulsePage";
+import OwnerAgingStockPage from "@/pages/owner/OwnerAgingStockPage";
+import OwnerReconciliationPage from "@/pages/owner/OwnerReconciliationPage";
+import OwnerCreditLimitPage from "@/pages/owner/OwnerCreditLimitPage";
+import OwnerScorecardPage from "@/pages/owner/OwnerScorecardPage";
+import OwnerMorningChecklistPage from "@/pages/owner/OwnerMorningChecklistPage";
+
+// Manager extra pages
+import ManagerTransfersPage from "@/pages/manager/ManagerTransfersPage";
+import ManagerCreateTransferPage from "@/pages/manager/ManagerCreateTransferPage";
 
 import NotFound from "@/pages/NotFound";
 
@@ -87,6 +123,8 @@ function RoleBasedRedirect() {
   switch (user.role) {
     case 'super_admin':
       return <Navigate to="/admin" replace />;
+    case 'tenant_owner':
+      return <Navigate to="/owner" replace />;
     case 'manager':
       return <Navigate to="/manager" replace />;
     case 'salesman':
@@ -119,17 +157,65 @@ function AppRoutes() {
         }
       >
         <Route index element={<AdminTenantsTab />} />
-        <Route path="overview" element={<AdminGlobalOverviewPage />} />
-        <Route path="users" element={<AdminUsersTab />} />
+        <Route path="distributors" element={<AdminTenantsTab />} />
         <Route path="tenant/:tenantId" element={<TenantDetailPage />} />
-        <Route path="users/:userId" element={<UserDetailPage />} />
       </Route>
 
-      {/* Manager Routes */}
+      {/* Tenant Owner Routes */}
+      <Route 
+        path="/owner" 
+        element={
+          <ProtectedRoute allowedRoles={['tenant_owner']}>
+            <TenantOwnerLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<TenantOwnerDashboard />} />
+        {/* Branch-scoped operations (same as manager, for home branch) */}
+        <Route path="requests" element={<ManagerRequests />} />
+        <Route path="requests/consolidated" element={<ManagerConsolidatedPage />} />
+        <Route path="requests/:requestId" element={<ManagerRequestDetailPage />} />
+        <Route path="trips" element={<ManagerTrips />} />
+        <Route path="trips/create" element={<ManagerCreateTripPage />} />
+        <Route path="trips/:tripId" element={<ManagerTripDetailPage />} />
+        <Route path="monitoring" element={<ManagerDeliveryMonitoringPage />} />
+        <Route path="monitoring/:tripId" element={<ManagerTripMonitoringDetailPage />} />
+        <Route path="products" element={<ManagerProductsPage />} />
+        <Route path="products/add" element={<ManagerAddProductPage />} />
+        <Route path="products/:productId" element={<ManagerEditProductPage />} />
+        <Route path="vendors" element={<ManagerVendorsPage />} />
+        <Route path="vendors/add" element={<ManagerAddVendorPage />} />
+        <Route path="vendors/:vendorId" element={<ManagerVendorDetailPage />} />
+        <Route path="vendors/:vendorId/edit" element={<ManagerEditVendorPage />} />
+        <Route path="routes" element={<ManagerRoutesPage />} />
+        <Route path="routes/create" element={<ManagerCreateRoutePage />} />
+        <Route path="routes/:routeId" element={<ManagerRouteDetailPage />} />
+        <Route path="routes/:routeId/edit" element={<ManagerEditRoutePage />} />
+        <Route path="team" element={<ManagerTeamPage />} />
+        <Route path="team/invite" element={<ManagerInviteUserPage />} />
+        <Route path="team/:userId" element={<ManagerTeamMemberPage />} />
+        <Route path="transfers" element={<ManagerTransfersPage />} />
+        <Route path="transfers/create" element={<ManagerCreateTransferPage />} />
+        {/* Admin features */}
+        <Route path="branches" element={<OwnerBranchesPage />} />
+        <Route path="branches/add" element={<OwnerAddBranchPage />} />
+        <Route path="branches/:branchId" element={<OwnerBranchDetailPage />} />
+        <Route path="branches/:branchId/edit" element={<OwnerEditBranchPage />} />
+        <Route path="settings" element={<OwnerSettingsPage />} />
+        {/* Admin Panel features */}
+        <Route path="pulse" element={<OwnerPulsePage />} />
+        <Route path="aging-stock" element={<OwnerAgingStockPage />} />
+        <Route path="reconciliation" element={<OwnerReconciliationPage />} />
+        <Route path="credit" element={<OwnerCreditLimitPage />} />
+        <Route path="scorecard" element={<OwnerScorecardPage />} />
+        <Route path="morning" element={<OwnerMorningChecklistPage />} />
+      </Route>
+
+      {/* Manager Routes (also accessible by tenant_owner for their home branch) */}
       <Route 
         path="/manager" 
         element={
-          <ProtectedRoute allowedRoles={['manager']}>
+          <ProtectedRoute allowedRoles={['manager', 'tenant_owner']}>
             <ManagerLayout />
           </ProtectedRoute>
         }
@@ -157,6 +243,8 @@ function AppRoutes() {
         <Route path="routes/create" element={<ManagerCreateRoutePage />} />
         <Route path="routes/:routeId" element={<ManagerRouteDetailPage />} />
         <Route path="routes/:routeId/edit" element={<ManagerEditRoutePage />} />
+        <Route path="transfers" element={<ManagerTransfersPage />} />
+        <Route path="transfers/create" element={<ManagerCreateTransferPage />} />
       </Route>
 
       {/* Salesman Routes */}
@@ -169,11 +257,16 @@ function AppRoutes() {
         }
       >
         <Route index element={<SalesmanDashboard />} />
+        <Route path="check-in" element={<SalesmanCheckInPage />} />
         <Route path="vendors" element={<SalesmanVendorsPage />} />
         <Route path="vendors/:vendorId" element={<SalesmanVendorDetailPage />} />
+        <Route path="visit/:vendorId/:mode" element={<SalesmanVisitModePage />} />
         <Route path="create/:vendorId" element={<SalesmanCreateRequestPage />} />
+        <Route path="closure/:vendorId" element={<SalesmanFinancialClosurePage />} />
+        <Route path="invoice/:vendorId" element={<SalesmanInvoicePage />} />
         <Route path="requests" element={<SalesmanRequestsPage />} />
         <Route path="requests/:requestId" element={<SalesmanRequestDetailPage />} />
+        <Route path="performance" element={<SalesmanPerformancePage />} />
       </Route>
 
       {/* Driver Routes */}
@@ -187,6 +280,11 @@ function AppRoutes() {
       >
         <Route index element={<DriverDashboard />} />
         <Route path="route" element={<DriverRoute />} />
+        <Route path="loading" element={<DriverLoadingPage />} />
+        <Route path="gate-pass" element={<DriverGatePassPage />} />
+        <Route path="stock" element={<DriverStockOnWheelsPage />} />
+        <Route path="incident" element={<DriverIncidentPage />} />
+        <Route path="eod" element={<DriverEODPage />} />
         <Route path="stop/:stopId" element={<DriverStopDetailPage />} />
       </Route>
 

@@ -1,25 +1,26 @@
-import { FileText, Truck, Package, Users } from 'lucide-react';
+import { FileText, Truck, Package, Users, ArrowLeftRight, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { 
-  getVendorRequestsByTenant, 
-  getTripsByTenant, 
-  getVendorsByTenant,
-  getUsersByTenant,
-  getProductsByTenant
+  getVendorRequestsByBranch, 
+  getTripsByBranch, 
+  getVendorsByBranch,
+  getProductsByBranch
 } from '@/data/mockData';
 
 export default function ManagerDashboard() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const requests = getVendorRequestsByTenant(tenant.id);
-  const trips = getTripsByTenant(tenant.id);
-  const vendors = getVendorsByTenant(tenant.id);
-  const products = getProductsByTenant(tenant.id);
+  const requests = getVendorRequestsByBranch(branch.id);
+  const trips = getTripsByBranch(branch.id);
+  const vendors = getVendorsByBranch(branch.id);
+  const products = getProductsByBranch(branch.id);
 
   const pendingRequests = requests.filter(r => r.status === 'pending').length;
   const todayRequests = requests.length;
@@ -32,21 +33,21 @@ export default function ManagerDashboard() {
       value: pendingRequests, 
       icon: FileText, 
       color: 'bg-amber-500',
-      onClick: () => navigate('/manager/requests')
+      onClick: () => navigate(`${basePath}/requests`)
     },
     { 
       label: 'Active Products', 
       value: activeProducts, 
       icon: Package, 
       color: 'bg-blue-500',
-      onClick: () => navigate('/manager/products')
+      onClick: () => navigate(`${basePath}/products`)
     },
     { 
       label: 'Active Trips', 
       value: activeTrips, 
       icon: Truck, 
       color: 'bg-emerald-500',
-      onClick: () => navigate('/manager/trips')
+      onClick: () => navigate(`${basePath}/trips`)
     },
     { 
       label: 'Total Vendors', 
@@ -85,7 +86,7 @@ export default function ManagerDashboard() {
         <div className="space-y-3">
           <Card 
             className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-            onClick={() => navigate('/manager/requests')}
+            onClick={() => navigate(`${basePath}/requests`)}
           >
             <CardContent className="flex items-center gap-4 p-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10">
@@ -102,7 +103,7 @@ export default function ManagerDashboard() {
 
           <Card 
             className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
-            onClick={() => navigate('/manager/trips')}
+            onClick={() => navigate(`${basePath}/trips`)}
           >
             <CardContent className="flex items-center gap-4 p-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10">
@@ -114,6 +115,66 @@ export default function ManagerDashboard() {
                   Create and assign delivery trips
                 </p>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate(`${basePath}/transfers`)}
+          >
+            <CardContent className="flex items-center gap-4 p-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10">
+                <ArrowLeftRight className="h-6 w-6 text-accent" />
+              </div>
+              <div>
+                <p className="font-medium">Stock Transfers</p>
+                <p className="text-sm text-muted-foreground">
+                  Request stock from other branches
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Manage Section */}
+      <div>
+        <h2 className="mb-3 text-lg font-semibold">Manage</h2>
+        <div className="grid grid-cols-2 gap-3">
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate(`${basePath}/products`)}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <Package className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Products</span>
+            </CardContent>
+          </Card>
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate(`${basePath}/vendors`)}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <Users className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Vendors</span>
+            </CardContent>
+          </Card>
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate(`${basePath}/routes`)}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <MapPin className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Routes</span>
+            </CardContent>
+          </Card>
+          <Card 
+            className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+            onClick={() => navigate(`${basePath}/team`)}
+          >
+            <CardContent className="flex items-center gap-3 p-3">
+              <Users className="h-5 w-5 text-accent" />
+              <span className="text-sm font-medium">Team</span>
             </CardContent>
           </Card>
         </div>

@@ -4,15 +4,17 @@ import { Route as RouteIcon, ChevronRight, Plus, MapPin } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { getRoutesByTenant, getVendorById } from '@/data/mockData';
+import { useBasePath } from '@/hooks/useBasePath';
+import { getRoutesByBranch, getVendorById } from '@/data/mockData';
 
 export default function ManagerRoutesPage() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const routes = getRoutesByTenant(tenant.id);
+  const routes = getRoutesByBranch(branch.id);
 
   return (
     <div className="space-y-4 p-4">
@@ -21,7 +23,7 @@ export default function ManagerRoutesPage() {
         <p className="text-sm text-muted-foreground">
           {routes.length} routes
         </p>
-        <Button size="sm" className="gap-1" onClick={() => navigate('/manager/routes/create')}>
+        <Button size="sm" className="gap-1" onClick={() => navigate(`${basePath}/routes/create`)}>
           <Plus className="h-4 w-4" />
           Create
         </Button>
@@ -38,7 +40,7 @@ export default function ManagerRoutesPage() {
             <Card 
               key={route.id}
               className="cursor-pointer transition-all hover:border-accent hover:shadow-md active:scale-[0.99]"
-              onClick={() => navigate(`/manager/routes/${route.id}`)}
+              onClick={() => navigate(`${basePath}/routes/${route.id}`)}
             >
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">

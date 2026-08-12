@@ -1,21 +1,15 @@
-import { Building2, Users, TrendingUp, Package, ChevronRight } from 'lucide-react';
+import { Building2, Users, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { tenants, users, vendorRequests, trips, getUsersByTenant, getVendorRequestsByTenant, getTripsByTenant } from '@/data/mockData';
+import { tenants, getUsersByTenant } from '@/data/mockData';
 
 export default function AdminTenantsTab() {
   const navigate = useNavigate();
   
   const totalTenants = tenants.length;
-  const totalUsers = users.filter(u => u.role !== 'super_admin').length;
-  const totalPendingRequests = vendorRequests.filter(r => r.status === 'pending').length;
-  const activeTrips = trips.filter(t => t.status !== 'completed').length;
 
   const stats = [
-    { label: 'Total Tenants', value: totalTenants, icon: Building2, color: 'bg-blue-500' },
-    { label: 'Total Users', value: totalUsers, icon: Users, color: 'bg-emerald-500' },
-    { label: 'Pending Requests', value: totalPendingRequests, icon: Package, color: 'bg-amber-500' },
-    { label: 'Active Trips', value: activeTrips, icon: TrendingUp, color: 'bg-purple-500' },
+    { label: 'Total Distributors', value: totalTenants, icon: Building2, color: 'bg-blue-500' },
   ];
 
   return (
@@ -35,14 +29,13 @@ export default function AdminTenantsTab() {
         ))}
       </div>
 
-      {/* Tenants List */}
+      {/* Distributors List */}
       <div>
-        <h2 className="mb-3 text-lg font-semibold">Tenants</h2>
+        <h2 className="mb-3 text-lg font-semibold">Distributors</h2>
         <div className="space-y-3">
           {tenants.map((tenant) => {
             const tenantUsers = getUsersByTenant(tenant.id);
-            const tenantRequests = getVendorRequestsByTenant(tenant.id);
-            const tenantTrips = getTripsByTenant(tenant.id);
+            const owner = tenantUsers.find(u => u.role === 'tenant_owner');
 
             return (
               <Card 
@@ -60,19 +53,15 @@ export default function AdminTenantsTab() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <div className="grid grid-cols-3 gap-4 text-center">
-                    <div>
-                      <p className="text-lg font-semibold">{tenantUsers.length}</p>
-                      <p className="text-xs text-muted-foreground">Users</p>
-                    </div>
-                    <div>
-                      <p className="text-lg font-semibold">{tenantRequests.length}</p>
-                      <p className="text-xs text-muted-foreground">Requests</p>
-                    </div>
-                    <div>
-                      <p className="text-lg font-semibold">{tenantTrips.length}</p>
-                      <p className="text-xs text-muted-foreground">Trips</p>
-                    </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">
+                      {tenantUsers.length} users
+                    </span>
+                    {owner && (
+                      <span className="text-muted-foreground">
+                        Owner: {owner.name}
+                      </span>
+                    )}
                   </div>
                 </CardContent>
               </Card>

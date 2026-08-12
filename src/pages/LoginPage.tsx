@@ -41,14 +41,15 @@ export default function LoginPage() {
   };
 
   const navigateToRoleHome = (userEmail: string) => {
-    // Determine role from email for redirect
     if (userEmail === 'admin@system.com') {
       navigate('/admin');
-    } else if (userEmail.includes('rajesh') || userEmail.includes('vikram')) {
+    } else if (userEmail === 'anil@alpha.com') {
+      navigate('/owner');
+    } else if (userEmail.includes('rajesh') || userEmail.includes('vikram') || userEmail.includes('deepak')) {
       navigate('/manager');
-    } else if (userEmail.includes('amit') || userEmail.includes('priya')) {
+    } else if (userEmail.includes('amit') || userEmail.includes('priya') || userEmail.includes('ravi')) {
       navigate('/salesman');
-    } else if (userEmail.includes('suresh')) {
+    } else if (userEmail.includes('suresh') || userEmail.includes('manoj')) {
       navigate('/driver');
     } else {
       navigate('/');
@@ -133,16 +134,32 @@ export default function LoginPage() {
               <span className="font-mono">admin@system.com / admin123</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Manager:</span>
+              <span className="text-muted-foreground">Distributor Admin:</span>
+              <span className="font-mono">anil@alpha.com / owner123</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Manager (Branch 1):</span>
               <span className="font-mono">rajesh@alpha.com / manager123</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Salesman:</span>
+              <span className="text-muted-foreground">Manager (Branch 2):</span>
+              <span className="font-mono">deepak@alpha.com / manager123</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Salesman (Branch 1):</span>
               <span className="font-mono">amit@alpha.com / sales123</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Driver:</span>
+              <span className="text-muted-foreground">Salesman (Branch 2):</span>
+              <span className="font-mono">ravi@alpha.com / sales123</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Driver (Branch 1):</span>
               <span className="font-mono">suresh@alpha.com / driver123</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Driver (Branch 2):</span>
+              <span className="font-mono">manoj@alpha.com / driver123</span>
             </div>
           </div>
         </div>

@@ -4,19 +4,21 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { 
-  getTripsByTenant, 
+  getTripsByBranch, 
   getRouteById, 
   getUserById
 } from '@/data/mockData';
 
 export default function ManagerTrips() {
-  const { tenant } = useAuth();
+  const { tenant, branch } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
 
-  if (!tenant) return null;
+  if (!tenant || !branch) return null;
 
-  const trips = getTripsByTenant(tenant.id);
+  const trips = getTripsByBranch(branch.id);
 
   // Filter for today's trips
   const today = new Date();
@@ -33,7 +35,7 @@ export default function ManagerTrips() {
         <p className="text-sm text-muted-foreground">
           {todayTrips.length} trip{todayTrips.length !== 1 ? 's' : ''} for today
         </p>
-        <Button onClick={() => navigate('/manager/trips/create')} size="sm" className="gap-1">
+        <Button onClick={() => navigate(`${basePath}/trips/create`)} size="sm" className="gap-1">
           <Plus className="h-4 w-4" />
           Create Trip
         </Button>
@@ -49,7 +51,7 @@ export default function ManagerTrips() {
             <Card 
               key={trip.id} 
               className="cursor-pointer transition-all hover:border-accent active:scale-[0.99]"
-              onClick={() => navigate(`/manager/trips/${trip.id}`)}
+              onClick={() => navigate(`${basePath}/trips/${trip.id}`)}
             >
               <CardContent className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3 min-w-0">

@@ -6,12 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBasePath } from '@/hooks/useBasePath';
 import { getVendorRequestById, getVendorById, getProductById, getUserById } from '@/data/mockData';
 
 export default function ManagerRequestDetailPage() {
   const { requestId } = useParams<{ requestId: string }>();
   const { tenant } = useAuth();
   const navigate = useNavigate();
+  const basePath = useBasePath();
 
   const request = requestId ? getVendorRequestById(requestId) : null;
   const vendor = request ? getVendorById(request.vendorId) : null;
@@ -25,7 +27,7 @@ export default function ManagerRequestDetailPage() {
         <div className="flex flex-col items-center justify-center p-8 text-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
           <Package className="mb-4 h-16 w-16 text-muted-foreground/50" />
           <p className="font-medium">Request not found</p>
-          <Button variant="outline" className="mt-4" onClick={() => navigate('/manager/requests')}>
+          <Button variant="outline" className="mt-4" onClick={() => navigate(`${basePath}/requests`)}>
             Go Back
           </Button>
         </div>
@@ -34,6 +36,10 @@ export default function ManagerRequestDetailPage() {
   }
 
   const totalItems = request.items.reduce((sum, item) => sum + item.quantity, 0);
+  const grandTotal = request.items.reduce((sum, item) => {
+    const product = getProductById(item.productId);
+    return sum + (product ? product.price * item.quantity : 0);
+  }, 0);
   const dateStr = new Date(request.createdAt).toLocaleDateString('en-IN', {
     weekday: 'long',
     day: 'numeric',
@@ -109,6 +115,7 @@ export default function ManagerRequestDetailPage() {
           <CardContent className="space-y-2">
             {request.items.map((item, index) => {
               const product = getProductById(item.productId);
+              const lineTotal = product ? product.price * item.quantity : 0;
               
               return (
                 <div 
@@ -121,16 +128,28 @@ export default function ManagerRequestDetailPage() {
                     </div>
                     <div>
                       <p className="font-medium">{product?.name || 'Unknown Product'}</p>
-                      <p className="text-xs text-muted-foreground">{product?.unit}</p>
+                      <p className="text-xs text-muted-foreground">
+                        ₹{product?.price?.toLocaleString('en-IN') || 0} per {product?.unit}
+                      </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg font-bold">{item.quantity}</p>
-                    <p className="text-xs text-muted-foreground">{product?.unit}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {item.quantity} × ₹{product?.price?.toLocaleString('en-IN') || 0}
+                    </p>
+                    <p className="text-base font-bold text-accent">
+                      ₹{lineTotal.toLocaleString('en-IN')}
+                    </p>
                   </div>
                 </div>
               );
             })}
+            
+            {/* Grand Total */}
+            <div className="mt-3 flex items-center justify-between border-t pt-3">
+              <span className="font-medium">Total Amount</span>
+              <span className="text-lg font-bold text-accent">₹{grandTotal.toLocaleString('en-IN')}</span>
+            </div>
           </CardContent>
         </Card>
       </div>
